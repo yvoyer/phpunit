@@ -58,11 +58,33 @@ class PHPUnit_Runner_Configuration
 
     private $cacheTokens = FALSE;
     private $addUncoveredFilesFromWhitelist = TRUE;
+    private $forceCoversAnnotation = FALSE;
+    private $mapTestClassNameToCoveredClassName = FALSE;
     private $processUncoveredFilesFromWhitelist = FALSE;
     private $reportCharset = 'UTF-8';
     private $reportHighlight = FALSE;
     private $reportHighLowerBound = 70;
     private $reportLowUpperBound = 35;
+    private $blacklist = array(
+              'include' => array(
+                'directory' => array(),
+                'file' => array()
+              ),
+              'exclude' => array(
+                'directory' => array(),
+                'file' => array()
+              )
+            );
+    private $whitelist = array(
+              'include' => array(
+                'directory' => array(),
+                'file' => array()
+              ),
+              'exclude' => array(
+                'directory' => array(),
+                'file' => array()
+              )
+            );
 
     private $backupGlobals = TRUE;
     private $backupStaticAttributes = FALSE;
@@ -83,6 +105,22 @@ class PHPUnit_Runner_Configuration
     private $timeoutForMediumTests = 10;
     private $timeoutForLargeTests = 60;
 
+    private $printerClass = 'PHPUnit_TextUI_ResultPrinter';
+    private $testSuiteLoaderClass = 'PHPUnit_Runner_StandardTestSuiteLoader';
+
+    private $includePaths = array();
+    private $iniSettings = array();
+    private $constants = array();
+    private $globalVariables = array();
+    private $envVariables = array();
+    private $postVariables = array();
+    private $getVariables = array();
+    private $cookieVariables = array();
+    private $serverVariables = array();
+    private $filesVariables = array();
+    private $requestVariables = array();
+
+    private $bootstrap = FALSE;
     private $colors = FALSE;
     private $logIncompleteSkipped = FALSE;
     private $processIsolation = FALSE;
@@ -121,6 +159,16 @@ class PHPUnit_Runner_Configuration
         return $this->addUncoveredFilesFromWhitelist;
     }
 
+    public function getForceCoversAnnotation()
+    {
+        return $this->forceCoversAnnotation;
+    }
+
+    public function getMapTestClassNameToCoveredClassName()
+    {
+        return $this->mapTestClassNameToCoveredClassName;
+    }
+
     public function getProcessUncoveredFilesFromWhitelist()
     {
         return $this->processUncoveredFilesFromWhitelist;
@@ -144,6 +192,16 @@ class PHPUnit_Runner_Configuration
     public function getReportLowUpperBound()
     {
         return $this->reportLowUpperBound;
+    }
+
+    public function getBlacklist()
+    {
+        return $this->blacklist;
+    }
+
+    public function getWhitelist()
+    {
+        return $this->whitelist;
     }
 
     public function getBackupGlobals()
@@ -216,6 +274,76 @@ class PHPUnit_Runner_Configuration
         return $this->timeoutForLargeTests;
     }
 
+    public function getIncludePaths()
+    {
+        return $this->includePaths;
+    }
+
+    public function getIniSettings()
+    {
+        return $this->iniSettings;
+    }
+
+    public function getConstants()
+    {
+        return $this->constants;
+    }
+
+    public function getGlobalVariables()
+    {
+        return $this->globalVariables;
+    }
+
+    public function getEnvVariables()
+    {
+        return $this->envVariables;
+    }
+
+    public function getPostVariables()
+    {
+        return $this->postVariables;
+    }
+
+    public function getGetVariables()
+    {
+        return $this->getVariables;
+    }
+
+    public function getCookieVariables()
+    {
+        return $this->cookieVariables;
+    }
+
+    public function getServerVariables()
+    {
+        return $this->serverVariables;
+    }
+
+    public function getFilesVariables()
+    {
+        return $this->filesVariables;
+    }
+
+    public function getRequestVariables()
+    {
+        return $this->requestVariables;
+    }
+
+    public function getBootstrap()
+    {
+        return $this->bootstrap;
+    }
+
+    public function getPrinterClass()
+    {
+        return $this->printerClass;
+    }
+
+    public function getTestSuiteLoaderClass()
+    {
+        return $this->testSuiteLoaderClass;
+    }
+
     public function getColors()
     {
         return $this->colors;
@@ -264,6 +392,24 @@ class PHPUnit_Runner_Configuration
         $this->addUncoveredFilesFromWhitelist = $flag;
     }
 
+    public function setForceCoversAnnotation($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->forceCoversAnnotation = $flag;
+    }
+
+    public function setMapTestClassNameToCoveredClassName($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->mapTestClassNameToCoveredClassName = $flag;
+    }
+
     public function setProcessUncoveredFilesFromWhitelist($flag)
     {
         if (!is_bool($flag)) {
@@ -300,13 +446,23 @@ class PHPUnit_Runner_Configuration
         $this->reportHighLowerBound = $bound;
     }
 
-    public function setReportLowUpperBound()
+    public function setReportLowUpperBound($bound)
     {
         if (!is_int($bound)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->reportLowUpperBound = $bound;
+    }
+
+    public function setBlacklist(array $blacklist)
+    {
+        $this->blacklist = $blacklist;
+    }
+
+    public function setWhitelist(array $whitelist)
+    {
+        $this->whitelist = $whitelist;
     }
 
     public function setBackupGlobals($flag)
@@ -425,6 +581,90 @@ class PHPUnit_Runner_Configuration
         }
 
         $this->timeoutForLargeTests = $timeout;
+    }
+
+    public function setPrinterClass($class)
+    {
+        if (!is_string($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->printerClass = $class;
+    }
+
+    public function setTestSuiteLoaderClass($class)
+    {
+        if (!is_string($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->testSuiteLoaderClass = $class;
+    }
+
+    public function setIncludePaths(array $includePaths)
+    {
+        $this->includePaths = $includePaths;
+    }
+
+    public function setIniSettings(array $iniSettings)
+    {
+        $this->iniSettings = $iniSettings;
+    }
+
+    public function setConstants(array $constants)
+    {
+        $this->constants = $constants;
+    }
+
+    public function setGlobalVariables(array $globalVariables)
+    {
+        $this->globalVariables = $globalVariables;
+    }
+
+    public function setEnvVariables(array $envVariables)
+    {
+        $this->envVariables = $envVariables;
+    }
+
+    public function setPostVariables(array $postVariables)
+    {
+        $this->postVariables = $postVariables;
+    }
+
+    public function setGetVariables(array $getVariables)
+    {
+        $this->getVariables = $getVariables;
+    }
+
+    public function setCookieVariables(array $cookieVariables)
+    {
+        $this->cookieVariables = $cookieVariables;
+    }
+
+    public function setServerVariables(array $serverVariables)
+    {
+        $this->serverVariables = $serverVariables;
+    }
+
+    public function setFilesVariables(array $filesVariables)
+    {
+        $this->filesVariables = $filesVariables;
+    }
+
+    public function setRequestVariables(array $requestVariables)
+    {
+        $this->requestVariables = $requestVariables;
+    }
+
+    public function setBootstrap($bootstrap)
+    {
+        if ($bootstrap !== FALSE && !is_string($bootstrap)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'string or false'
+            );
+        }
+
+        $this->bootstrap = $bootstrap;
     }
 
     public function setColors($flag)
