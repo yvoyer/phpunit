@@ -54,7 +54,7 @@
  */
 class PHPUnit_Runner_Configuration
 {
-    private $instance;
+    private static $instance;
 
     private $cacheTokens = FALSE;
     private $addUncoveredFilesFromWhitelist = TRUE;
@@ -130,11 +130,11 @@ class PHPUnit_Runner_Configuration
 
     public static function getInstance()
     {
-        if ($this->instance === NULL) {
-            $this->instance = new PHPUnit_Runner_Configuration;
+        if (self::$instance === NULL) {
+            self::$instance = new PHPUnit_Runner_Configuration;
         }
 
-        return $this->instance;
+        return self::$instance;
     }
 
     private function __construct()
@@ -585,7 +585,7 @@ class PHPUnit_Runner_Configuration
 
     public function setPrinterClass($class)
     {
-        if (!is_string($flag)) {
+        if (!is_string($class)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
@@ -594,7 +594,7 @@ class PHPUnit_Runner_Configuration
 
     public function setTestSuiteLoaderClass($class)
     {
-        if (!is_string($flag)) {
+        if (!is_string($class)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
