@@ -62,5 +62,190 @@ class PHPUnit_Runner_Configuration_Loader_XML
      */
     public function load(PHPUnit_Runner_Configuration $configuration, $filename)
     {
+        $document = PHPUnit_Util_XML::loadFile($filename, FALSE, TRUE);
+        $xpath    = new DOMXPath($document);
+
+        $this->handleFilterConfiguration($configuration, $document, $xpath);
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleFilterConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+        $tmp = $xpath->query('filter/whitelist');
+
+        if ($tmp->length == 1) {
+            if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
+                $flag = $this->getBoolean(
+                  (string)$tmp->item(0)->getAttribute(
+                    'addUncoveredFilesFromWhitelist'
+                  )
+                );
+
+                if (is_bool($flag)) {
+                    $configuration->setAddUncoveredFilesFromWhitelist($flag);
+                }
+            }
+
+            if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
+                $processUncoveredFilesFromWhitelist = $this->getBoolean(
+                  (string)$tmp->item(0)->getAttribute(
+                    'processUncoveredFilesFromWhitelist'
+                  )
+                );
+
+                if (is_bool($flag)) {
+                    $configuration->setProcessUncoveredFilesFromWhitelist($flag);
+                }
+            }
+        }
+
+        foreach ($this->readFilterDirectories($xpath, 'filter/blacklist/directory') as $dir) {
+            $configuration->addDirectoryToBlacklistInclude($dir);
+        }
+
+        foreach ($this->readFilterFiles($xpath, 'filter/blacklist/file') as $file) {
+            $configuration->addFileToBlacklistInclude($file);
+        }
+
+        foreach ($this->readFilterDirectories($xpath, 'filter/blacklist/exclude/directory') as $dir) {
+            $configuration->addDirectoryToBlacklistExclude($dir);
+        }
+
+        foreach ($this->readFilterFiles($xpath, 'filter/blacklist/exclude/file') as $file) {
+            $configuration->addFileToBlacklistExclude($file);
+        }
+
+        foreach ($this->readFilterDirectories($xpath, 'filter/whitelist/directory') as $dir) {
+            $configuration->addDirectoryToWhitelistInclude($dir);
+        }
+
+        foreach ($this->readFilterFiles($xpath, 'filter/whitelist/file') as $file) {
+            $configuration->addFileToWhitelistInclude($file);
+        }
+
+        foreach ($this->readFilterDirectories($xpath, 'filter/whitelist/exclude/directory') as $dir) {
+            $configuration->addDirectoryToWhitelistExclude($dir);
+        }
+
+        foreach ($this->readFilterFiles($xpath, 'filter/whitelist/exclude/file') as $file) {
+            $configuration->addFileToWhitelistExclude($file);
+        }
+    }
+
+    /**
+     * @param  string $value
+     * @return boolean
+     */
+    private function getBoolean($value)
+    {
+        if (strtolower($value) == 'false') {
+            return FALSE;
+        }
+
+        else if (strtolower($value) == 'true') {
+            return TRUE;
+        }
+    }
+
+    /**
+     * @param  string $value
+     * @return boolean
+     */
+    private function getInteger($value)
+    {
+        if (is_numeric($value)) {
+            return (int)$value;
+        }
+    }
+
+    /**
+     * @param  DOMXPath $xpath
+     * @param  string   $query
+     * @return array
+     */
+    private function readFilterDirectories(DOMXPath $xpath, $query)
+    {
+        $directories = array();
+
+        foreach ($xpath->query($query) as $directory) {
+            if ($directory->hasAttribute('prefix')) {
+                $prefix = (string)$directory->getAttribute('prefix');
+            } else {
+                $prefix = '';
+            }
+
+            if ($directory->hasAttribute('suffix')) {
+                $suffix = (string)$directory->getAttribute('suffix');
+            } else {
+                $suffix = '.php';
+            }
+
+            if ($directory->hasAttribute('group')) {
+                $group = (string)$directory->getAttribute('group');
+            } else {
+                $group = 'DEFAULT';
+            }
+
+            $directories[] = array(
+              'path'   => $this->toAbsolutePath((string)$directory->nodeValue),
+              'prefix' => $prefix,
+              'suffix' => $suffix,
+              'group'  => $group
+            );
+        }
+
+        return $directories;
+    }
+
+    /**
+     * @param  DOMXPath $xpath
+     * @param  string   $query
+     * @return array
+     */
+    private function readFilterFiles(DOMXPath $xpath, $query)
+    {
+        $files = array();
+
+        foreach ($xpath->query($query) as $file) {
+            $files[] = $this->toAbsolutePath((string)$file->nodeValue);
+        }
+
+        return $files;
+    }
+
+    /**
+     * @param  string  $path
+     * @param  boolean $useIncludePath
+     * @return string
+     */
+    private function toAbsolutePath($path, $useIncludePath = FALSE)
+    {
+        // Check whether the path is already absolute.
+        if ($path[0] === '/' || $path[0] === '\\' ||
+            (strlen($path) > 3 && ctype_alpha($path[0]) &&
+            $path[1] === ':' && ($path[2] === '\\' || $path[2] === '/'))) {
+            return $path;
+        }
+
+        // Check whether a stream is used.
+        if (strpos($path, '://') !== FALSE) {
+            return $path;
+        }
+
+        $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+
+        if ($useIncludePath && !file_exists($file)) {
+            $includePathFile = stream_resolve_include_path($path);
+
+            if ($includePathFile) {
+                $file = $includePathFile;
+            }
+        }
+
+        return $file;
     }
 }

@@ -374,6 +374,62 @@ class PHPUnit_Runner_Configuration
         return $this->verbose;
     }
 
+    public function addDirectoryToBlacklistInclude(array $directory)
+    {
+        $this->blacklist['include']['directory'][] = $directory;
+    }
+
+    public function addFileToBlacklistInclude($file)
+    {
+        if (!is_string($file)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->blacklist['include']['file'][] = $file;
+    }
+
+    public function addDirectoryToBlacklistExclude(array $directory)
+    {
+        $this->blacklist['exclude']['directory'][] = $directory;
+    }
+
+    public function addFileToBlacklistExclude($file)
+    {
+        if (!is_string($file)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->blacklist['exclude']['file'][] = $file;
+    }
+
+    public function addDirectoryToWhitelistInclude(array $directory)
+    {
+        $this->whitelist['include']['directory'][] = $directory;
+    }
+
+    public function addFileToWhitelistInclude($file)
+    {
+        if (!is_string($file)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->whitelist['include']['file'][] = $file;
+    }
+
+    public function addDirectoryToWhitelistExclude(array $directory)
+    {
+        $this->whitelist['exclude']['directory'][] = $directory;
+    }
+
+    public function addFileToWhitelistExclude($file)
+    {
+        if (!is_string($file)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->whitelist['exclude']['file'][] = $file;
+    }
+
     public function setCacheTokens($flag)
     {
         if (!is_bool($flag)) {
@@ -453,16 +509,6 @@ class PHPUnit_Runner_Configuration
         }
 
         $this->reportLowUpperBound = $bound;
-    }
-
-    public function setBlacklist(array $blacklist)
-    {
-        $this->blacklist = $blacklist;
-    }
-
-    public function setWhitelist(array $whitelist)
-    {
-        $this->whitelist = $whitelist;
     }
 
     public function setBackupGlobals($flag)

@@ -51,6 +51,7 @@
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.8.0
+ * @covers     PHPUnit_Runner_Configuration_Loader_XML
  */
 class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
 {
@@ -78,6 +79,73 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         $this->loader->load(
           $this->configuration,
           __DIR__ . '/../../../_files/configuration.xml'
+        );
+
+        $this->assertTrue($this->configuration->getAddUncoveredFilesFromWhitelist());
+        $this->assertTrue($this->configuration->getProcessUncoveredFilesFromWhitelist());
+
+        $this->assertEquals(
+          array(
+            'include' => array(
+              'directory' => array(
+                array(
+                  'path'   => '/path/to/files',
+                  'prefix' => '',
+                  'suffix' => '.php',
+                  'group'  => 'DEFAULT'
+                )
+              ),
+              'file' => array(
+                '/path/to/file'
+              )
+            ),
+            'exclude' => array(
+              'directory' => array(
+                array(
+                  'path'   => '/path/to/files',
+                  'prefix' => '',
+                  'suffix' => '.php',
+                  'group'  => 'DEFAULT'
+                )
+              ),
+              'file' => array(
+                '/path/to/file'
+              )
+            )
+          ),
+          $this->configuration->getBlacklist()
+        );
+
+        $this->assertEquals(
+          array(
+            'include' => array(
+              'directory' => array(
+                array(
+                  'path'   => '/path/to/files',
+                  'prefix' => '',
+                  'suffix' => '.php',
+                  'group'  => 'DEFAULT'
+                )
+              ),
+              'file' => array(
+                '/path/to/file'
+              )
+            ),
+            'exclude' => array(
+              'directory' => array(
+                array(
+                  'path'   => '/path/to/files',
+                  'prefix' => '',
+                  'suffix' => '.php',
+                  'group'  => 'DEFAULT'
+                )
+              ),
+              'file' => array(
+                '/path/to/file'
+              )
+            )
+          ),
+          $this->configuration->getWhitelist()
         );
     }
 }
