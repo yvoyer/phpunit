@@ -86,7 +86,7 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue($this->configuration->getAddUncoveredFilesFromWhitelist());
-        $this->assertTrue($this->configuration->getProcessUncoveredFilesFromWhitelist());
+        $this->assertFalse($this->configuration->getProcessUncoveredFilesFromWhitelist());
 
         $this->assertEquals(
           array(
@@ -154,5 +154,30 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('name'), $this->configuration->getGroups());
         $this->assertEquals(array('name'), $this->configuration->getExcludeGroups());
+
+        $this->assertFalse($this->configuration->getCacheTokens());
+        $this->assertFalse($this->configuration->getColors());
+        $this->assertTrue($this->configuration->getBackupGlobals());
+        $this->assertFalse($this->configuration->getBackupStaticAttributes());
+        $this->assertTrue($this->configuration->getConvertErrorsToExceptions());
+        $this->assertTrue($this->configuration->getConvertNoticesToExceptions());
+        $this->assertTrue($this->configuration->getConvertWarningsToExceptions());
+        $this->assertFalse($this->configuration->getForceCoversAnnotation());
+        $this->assertFalse($this->configuration->getMapTestClassNameToCoveredClassName());
+        $this->assertFalse($this->configuration->getProcessIsolation());
+        $this->assertFalse($this->configuration->getStopOnError());
+        $this->assertFalse($this->configuration->getStopOnFailure());
+        $this->assertFalse($this->configuration->getStopOnIncomplete());
+        $this->assertFalse($this->configuration->getStopOnSkipped());
+        $this->assertFalse($this->configuration->getStrict());
+        $this->assertFalse($this->configuration->getVerbose());
+
+        $this->assertEquals(1, $this->configuration->getTimeoutForSmallTests());
+        $this->assertEquals(10, $this->configuration->getTimeoutForMediumTests());
+        $this->assertEquals(60, $this->configuration->getTimeoutForLargeTests());
+
+        $this->assertEquals('/path/to/bootstrap.php', $this->configuration->getBootstrap());
+        $this->assertEquals('PHPUnit_Runner_StandardTestSuiteLoader', $this->configuration->getTestSuiteLoaderClass());
+        $this->assertEquals('PHPUnit_TextUI_ResultPrinter', $this->configuration->getPrinterClass());
     }
 }

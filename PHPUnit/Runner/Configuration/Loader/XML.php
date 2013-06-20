@@ -62,16 +62,17 @@ class PHPUnit_Runner_Configuration_Loader_XML
      */
     public function load(PHPUnit_Runner_Configuration $configuration, $filename)
     {
-        $filename = realpath($filename);
-        $document = PHPUnit_Util_XML::loadFile($filename, FALSE, TRUE);
-        $xpath    = new DOMXPath($document);
+        $filename              = realpath($filename);
+        $configurationFilePath = dirname($filename);
+        $document              = PHPUnit_Util_XML::loadFile($filename, FALSE, TRUE);
+        $xpath                 = new DOMXPath($document);
 
-        $this->handleFilterConfiguration($configuration, $document, $xpath, dirname($filename));
+        $this->handleFilterConfiguration($configuration, $document, $xpath, $configurationFilePath);
         $this->handleGroupConfiguration($configuration, $document, $xpath);
         $this->handleListenerConfiguration($configuration, $document, $xpath);
         $this->handleLoggingConfiguration($configuration, $document, $xpath);
         $this->handlePhpConfiguration($configuration, $document, $xpath);
-        $this->handleRunnerConfiguration($configuration, $document, $xpath);
+        $this->handleRunnerConfiguration($configuration, $document, $xpath, $configurationFilePath);
         $this->handleSeleniumConfiguration($configuration, $document, $xpath);
         $this->handleTestSuiteConfiguration($configuration, $document, $xpath);
 
@@ -90,27 +91,23 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
         if ($tmp->length == 1) {
             if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
-                $flag = $this->getBoolean(
+                $this->setBoolean(
+                  $configuration,
+                  'setAddUncoveredFilesFromWhitelist',
                   (string)$tmp->item(0)->getAttribute(
                     'addUncoveredFilesFromWhitelist'
                   )
                 );
-
-                if (is_bool($flag)) {
-                    $configuration->setAddUncoveredFilesFromWhitelist($flag);
-                }
             }
 
             if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFilesFromWhitelist = $this->getBoolean(
+                $this->setBoolean(
+                  $configuration,
+                  'setProcessUncoveredFilesFromWhitelist',
                   (string)$tmp->item(0)->getAttribute(
                     'processUncoveredFilesFromWhitelist'
                   )
                 );
-
-                if (is_bool($flag)) {
-                    $configuration->setProcessUncoveredFilesFromWhitelist($flag);
-                }
             }
         }
 
@@ -194,9 +191,204 @@ class PHPUnit_Runner_Configuration_Loader_XML
      * @param PHPUnit_Runner_Configuration $configuration
      * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
+     * @param string                       $configurationFilePath
      */
-    private function handleRunnerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handleRunnerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath, $configurationFilePath)
     {
+        if ($document->documentElement->hasAttribute('cacheTokens')) {
+            $this->setBoolean(
+              $configuration,
+              'setCacheTokens',
+              (string)$document->documentElement->getAttribute('cacheTokens')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('colors')) {
+            $this->setBoolean(
+              $configuration,
+              'setColors',
+              (string)$document->documentElement->getAttribute('colors')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('backupGlobals')) {
+            $this->setBoolean(
+              $configuration,
+              'setBackupGlobals',
+              (string)$document->documentElement->getAttribute('backupGlobals')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('backupStaticAttributes')) {
+            $this->setBoolean(
+              $configuration,
+              'setBackupStaticAttributes',
+              (string)$document->documentElement->getAttribute('backupStaticAttributes')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('convertErrorsToExceptions')) {
+            $this->setBoolean(
+              $configuration,
+              'setConvertErrorsToExceptions',
+              (string)$document->documentElement->getAttribute('convertErrorsToExceptions')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('convertNoticesToExceptions')) {
+            $this->setBoolean(
+              $configuration,
+              'setConvertNoticesToExceptions',
+              (string)$document->documentElement->getAttribute('convertNoticesToExceptions')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('convertWarningsToExceptions')) {
+            $this->setBoolean(
+              $configuration,
+              'setConvertWarningsToExceptions',
+              (string)$document->documentElement->getAttribute('convertWarningsToExceptions')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
+            $this->setBoolean(
+              $configuration,
+              'setForceCoversAnnotation',
+              (string)$document->documentElement->getAttribute('forceCoversAnnotation')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('mapTestClassNameToCoveredClassName')) {
+            $this->setBoolean(
+              $configuration,
+              'setMapTestClassNameToCoveredClassName',
+              (string)$document->documentElement->getAttribute('mapTestClassNameToCoveredClassName')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('processIsolation')) {
+            $this->setBoolean(
+              $configuration,
+              'setProcessIsolation',
+              (string)$document->documentElement->getAttribute('processIsolation')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('stopOnError')) {
+            $this->setBoolean(
+              $configuration,
+              'setStopOnError',
+              (string)$document->documentElement->getAttribute('stopOnError')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('stopOnFailure')) {
+            $this->setBoolean(
+              $configuration,
+              'setStopOnFailure',
+              (string)$document->documentElement->getAttribute('stopOnFailure')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('stopOnIncomplete')) {
+            $this->setBoolean(
+              $configuration,
+              'setStopOnIncomplete',
+              (string)$document->documentElement->getAttribute('stopOnIncomplete')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('stopOnSkipped')) {
+            $this->setBoolean(
+              $configuration,
+              'setStopOnSkipped',
+              (string)$document->documentElement->getAttribute('stopOnSkipped')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('strict')) {
+            $this->setBoolean(
+              $configuration,
+              'setStrict',
+              (string)$document->documentElement->getAttribute('strict')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('verbose')) {
+            $this->setBoolean(
+              $configuration,
+              'setVerbose',
+              (string)$document->documentElement->getAttribute('verbose')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('timeoutForSmallTests')) {
+            $this->setInteger(
+              $configuration,
+              'setTimeoutForSmallTests',
+              (string)$document->documentElement->getAttribute('timeoutForSmallTests')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('timeoutForMediumTests')) {
+            $this->setInteger(
+              $configuration,
+              'setTimeoutForMediumTests',
+              (string)$document->documentElement->getAttribute('timeoutForMediumTests')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('timeoutForLargeTests')) {
+            $this->setInteger(
+              $configuration,
+              'setTimeoutForLargeTests',
+              (string)$document->documentElement->getAttribute('timeoutForLargeTests')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('bootstrap')) {
+            $configuration->setBootstrap(
+              $this->toAbsolutePath(
+                (string)$document->documentElement->getAttribute('bootstrap'),
+                $configurationFilePath
+              )
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('testSuiteLoaderClass')) {
+            $configuration->setTestSuiteLoaderClass(
+              (string)$document->documentElement->getAttribute(
+                'testSuiteLoaderClass'
+              )
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('testSuiteLoaderFile')) {
+            $configuration->setTestSuiteLoaderFile(
+              $this->toAbsolutePath(
+                (string)$document->documentElement->getAttribute(
+                  'testSuiteLoaderFile'
+                ),
+                $configurationFilePath
+              )
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('printerClass')) {
+            $configuration->setPrinterClass(
+              (string)$document->documentElement->getAttribute('printerClass')
+            );
+        }
+
+        if ($document->documentElement->hasAttribute('printerFile')) {
+            $configuration->setPrinterFile(
+              $this->toAbsolutePath(
+                (string)$document->documentElement->getAttribute('printerFile'),
+                $configurationFilePath
+              )
+            );
+        }
     }
 
     /**
@@ -227,28 +419,32 @@ class PHPUnit_Runner_Configuration_Loader_XML
     }
 
     /**
-     * @param  string $value
+     * @param  PHPUnit_Runner_Configuration $configuration
+     * @param  string                       $method
+     * @param  mixed                        $value
      * @return boolean
      */
-    private function getBoolean($value)
+    private function setBoolean(PHPUnit_Runner_Configuration $configuration, $method, $value)
     {
         if (strtolower($value) == 'false') {
-            return FALSE;
+            $configuration->$method(FALSE);
         }
 
         else if (strtolower($value) == 'true') {
-            return TRUE;
+            $configuration->$method(TRUE);
         }
     }
 
     /**
-     * @param  string $value
+     * @param  PHPUnit_Runner_Configuration $configuration
+     * @param  string                       $method
+     * @param  mixed                        $value
      * @return boolean
      */
-    private function getInteger($value)
+    private function setInteger(PHPUnit_Runner_Configuration $configuration, $method, $value)
     {
         if (is_numeric($value)) {
-            return (int)$value;
+            $configuration->$method((int)$value);
         }
     }
 
