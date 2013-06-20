@@ -67,25 +67,24 @@ class PHPUnit_Runner_Configuration_Loader_XML
         $document              = PHPUnit_Util_XML::loadFile($filename, FALSE, TRUE);
         $xpath                 = new DOMXPath($document);
 
-        $this->handleFilterConfiguration($configuration, $document, $xpath, $configurationFilePath);
-        $this->handleGroupConfiguration($configuration, $document, $xpath);
-        $this->handleListenerConfiguration($configuration, $document, $xpath);
-        $this->handleLoggingConfiguration($configuration, $document, $xpath);
-        $this->handlePhpConfiguration($configuration, $document, $xpath, $configurationFilePath);
-        $this->handleRunnerConfiguration($configuration, $document, $xpath, $configurationFilePath);
-        $this->handleSeleniumConfiguration($configuration, $document, $xpath);
-        $this->handleTestSuiteConfiguration($configuration, $document, $xpath);
+        $this->handleFilterConfiguration($configuration, $xpath, $configurationFilePath);
+        $this->handleGroupConfiguration($configuration, $xpath);
+        $this->handleListenerConfiguration($configuration, $xpath);
+        $this->handleLoggingConfiguration($configuration, $xpath, $configurationFilePath);
+        $this->handlePhpConfiguration($configuration, $xpath, $configurationFilePath);
+        $this->handleRunnerConfiguration($configuration, $document->documentElement, $configurationFilePath);
+        $this->handleSeleniumConfiguration($configuration, $xpath);
+        $this->handleTestSuiteConfiguration($configuration, $xpath);
 
         $configuration->addSource($filename);
     }
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
      * @param string                       $configurationFilePath
      */
-    private function handleFilterConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath, $configurationFilePath)
+    private function handleFilterConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath, $configurationFilePath)
     {
         $tmp = $xpath->query('filter/whitelist');
 
@@ -146,10 +145,9 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
      */
-    private function handleGroupConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handleGroupConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
     {
         foreach ($xpath->query('groups/include/group') as $group) {
             $configuration->addGroup((string)$group->nodeValue);
@@ -162,29 +160,67 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
      */
-    private function handleListenerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handleListenerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
     {
     }
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
-     * @param DOMXPath                     $xpath
-     */
-    private function handleLoggingConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
-    {
-    }
-
-    /**
-     * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
      * @param string                       $configurationFilePath
      */
-    private function handlePhpConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath, $configurationFilePath)
+    private function handleLoggingConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath, $configurationFilePath)
+    {
+        foreach ($xpath->query('logging/log') as $log) {
+            $type = (string)$log->getAttribute('type');
+
+            $target = $this->toAbsolutePath(
+              (string)$log->getAttribute('target'),
+              $configurationFilePath
+            );
+
+            switch ($type) {
+                case 'coverage-html': {
+                    if ($log->hasAttribute('charset')) {
+                    }
+
+                    if ($log->hasAttribute('lowUpperBound')) {
+                    }
+
+                    if ($log->hasAttribute('highLowerBound')) {
+                    }
+
+                    if ($log->hasAttribute('highlight')) {
+                    }
+                }
+                break;
+
+                case 'coverage-text': {
+                    if ($log->hasAttribute('showUncoveredFiles')) {
+                    }
+
+                    if ($log->hasAttribute('showOnlySummary')) {
+                    }
+                }
+                break;
+
+                case 'junit': {
+                    if ($log->hasAttribute('logIncompleteSkipped')) {
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMXPath                     $xpath
+     * @param string                       $configurationFilePath
+     */
+    private function handlePhpConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath, $configurationFilePath)
     {
         foreach ($xpath->query('php/includePath') as $includePath) {
             $configuration->addIncludePath(
@@ -227,185 +263,184 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
-     * @param DOMXPath                     $xpath
+     * @param DOMElement                   $root
      * @param string                       $configurationFilePath
      */
-    private function handleRunnerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath, $configurationFilePath)
+    private function handleRunnerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMElement $root, $configurationFilePath)
     {
-        if ($document->documentElement->hasAttribute('cacheTokens')) {
+        if ($root->hasAttribute('cacheTokens')) {
             $this->setBoolean(
               $configuration,
               'setCacheTokens',
-              (string)$document->documentElement->getAttribute('cacheTokens')
+              (string)$root->getAttribute('cacheTokens')
             );
         }
 
-        if ($document->documentElement->hasAttribute('colors')) {
+        if ($root->hasAttribute('colors')) {
             $this->setBoolean(
               $configuration,
               'setColors',
-              (string)$document->documentElement->getAttribute('colors')
+              (string)$root->getAttribute('colors')
             );
         }
 
-        if ($document->documentElement->hasAttribute('backupGlobals')) {
+        if ($root->hasAttribute('backupGlobals')) {
             $this->setBoolean(
               $configuration,
               'setBackupGlobals',
-              (string)$document->documentElement->getAttribute('backupGlobals')
+              (string)$root->getAttribute('backupGlobals')
             );
         }
 
-        if ($document->documentElement->hasAttribute('backupStaticAttributes')) {
+        if ($root->hasAttribute('backupStaticAttributes')) {
             $this->setBoolean(
               $configuration,
               'setBackupStaticAttributes',
-              (string)$document->documentElement->getAttribute('backupStaticAttributes')
+              (string)$root->getAttribute('backupStaticAttributes')
             );
         }
 
-        if ($document->documentElement->hasAttribute('convertErrorsToExceptions')) {
+        if ($root->hasAttribute('convertErrorsToExceptions')) {
             $this->setBoolean(
               $configuration,
               'setConvertErrorsToExceptions',
-              (string)$document->documentElement->getAttribute('convertErrorsToExceptions')
+              (string)$root->getAttribute('convertErrorsToExceptions')
             );
         }
 
-        if ($document->documentElement->hasAttribute('convertNoticesToExceptions')) {
+        if ($root->hasAttribute('convertNoticesToExceptions')) {
             $this->setBoolean(
               $configuration,
               'setConvertNoticesToExceptions',
-              (string)$document->documentElement->getAttribute('convertNoticesToExceptions')
+              (string)$root->getAttribute('convertNoticesToExceptions')
             );
         }
 
-        if ($document->documentElement->hasAttribute('convertWarningsToExceptions')) {
+        if ($root->hasAttribute('convertWarningsToExceptions')) {
             $this->setBoolean(
               $configuration,
               'setConvertWarningsToExceptions',
-              (string)$document->documentElement->getAttribute('convertWarningsToExceptions')
+              (string)$root->getAttribute('convertWarningsToExceptions')
             );
         }
 
-        if ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
+        if ($root->hasAttribute('forceCoversAnnotation')) {
             $this->setBoolean(
               $configuration,
               'setForceCoversAnnotation',
-              (string)$document->documentElement->getAttribute('forceCoversAnnotation')
+              (string)$root->getAttribute('forceCoversAnnotation')
             );
         }
 
-        if ($document->documentElement->hasAttribute('mapTestClassNameToCoveredClassName')) {
+        if ($root->hasAttribute('mapTestClassNameToCoveredClassName')) {
             $this->setBoolean(
               $configuration,
               'setMapTestClassNameToCoveredClassName',
-              (string)$document->documentElement->getAttribute('mapTestClassNameToCoveredClassName')
+              (string)$root->getAttribute('mapTestClassNameToCoveredClassName')
             );
         }
 
-        if ($document->documentElement->hasAttribute('processIsolation')) {
+        if ($root->hasAttribute('processIsolation')) {
             $this->setBoolean(
               $configuration,
               'setProcessIsolation',
-              (string)$document->documentElement->getAttribute('processIsolation')
+              (string)$root->getAttribute('processIsolation')
             );
         }
 
-        if ($document->documentElement->hasAttribute('stopOnError')) {
+        if ($root->hasAttribute('stopOnError')) {
             $this->setBoolean(
               $configuration,
               'setStopOnError',
-              (string)$document->documentElement->getAttribute('stopOnError')
+              (string)$root->getAttribute('stopOnError')
             );
         }
 
-        if ($document->documentElement->hasAttribute('stopOnFailure')) {
+        if ($root->hasAttribute('stopOnFailure')) {
             $this->setBoolean(
               $configuration,
               'setStopOnFailure',
-              (string)$document->documentElement->getAttribute('stopOnFailure')
+              (string)$root->getAttribute('stopOnFailure')
             );
         }
 
-        if ($document->documentElement->hasAttribute('stopOnIncomplete')) {
+        if ($root->hasAttribute('stopOnIncomplete')) {
             $this->setBoolean(
               $configuration,
               'setStopOnIncomplete',
-              (string)$document->documentElement->getAttribute('stopOnIncomplete')
+              (string)$root->getAttribute('stopOnIncomplete')
             );
         }
 
-        if ($document->documentElement->hasAttribute('stopOnSkipped')) {
+        if ($root->hasAttribute('stopOnSkipped')) {
             $this->setBoolean(
               $configuration,
               'setStopOnSkipped',
-              (string)$document->documentElement->getAttribute('stopOnSkipped')
+              (string)$root->getAttribute('stopOnSkipped')
             );
         }
 
-        if ($document->documentElement->hasAttribute('strict')) {
+        if ($root->hasAttribute('strict')) {
             $this->setBoolean(
               $configuration,
               'setStrict',
-              (string)$document->documentElement->getAttribute('strict')
+              (string)$root->getAttribute('strict')
             );
         }
 
-        if ($document->documentElement->hasAttribute('verbose')) {
+        if ($root->hasAttribute('verbose')) {
             $this->setBoolean(
               $configuration,
               'setVerbose',
-              (string)$document->documentElement->getAttribute('verbose')
+              (string)$root->getAttribute('verbose')
             );
         }
 
-        if ($document->documentElement->hasAttribute('timeoutForSmallTests')) {
+        if ($root->hasAttribute('timeoutForSmallTests')) {
             $this->setInteger(
               $configuration,
               'setTimeoutForSmallTests',
-              (string)$document->documentElement->getAttribute('timeoutForSmallTests')
+              (string)$root->getAttribute('timeoutForSmallTests')
             );
         }
 
-        if ($document->documentElement->hasAttribute('timeoutForMediumTests')) {
+        if ($root->hasAttribute('timeoutForMediumTests')) {
             $this->setInteger(
               $configuration,
               'setTimeoutForMediumTests',
-              (string)$document->documentElement->getAttribute('timeoutForMediumTests')
+              (string)$root->getAttribute('timeoutForMediumTests')
             );
         }
 
-        if ($document->documentElement->hasAttribute('timeoutForLargeTests')) {
+        if ($root->hasAttribute('timeoutForLargeTests')) {
             $this->setInteger(
               $configuration,
               'setTimeoutForLargeTests',
-              (string)$document->documentElement->getAttribute('timeoutForLargeTests')
+              (string)$root->getAttribute('timeoutForLargeTests')
             );
         }
 
-        if ($document->documentElement->hasAttribute('bootstrap')) {
+        if ($root->hasAttribute('bootstrap')) {
             $configuration->setBootstrap(
               $this->toAbsolutePath(
-                (string)$document->documentElement->getAttribute('bootstrap'),
+                (string)$root->getAttribute('bootstrap'),
                 $configurationFilePath
               )
             );
         }
 
-        if ($document->documentElement->hasAttribute('testSuiteLoaderClass')) {
+        if ($root->hasAttribute('testSuiteLoaderClass')) {
             $configuration->setTestSuiteLoaderClass(
-              (string)$document->documentElement->getAttribute(
+              (string)$root->getAttribute(
                 'testSuiteLoaderClass'
               )
             );
         }
 
-        if ($document->documentElement->hasAttribute('testSuiteLoaderFile')) {
+        if ($root->hasAttribute('testSuiteLoaderFile')) {
             $configuration->setTestSuiteLoaderFile(
               $this->toAbsolutePath(
-                (string)$document->documentElement->getAttribute(
+                (string)$root->getAttribute(
                   'testSuiteLoaderFile'
                 ),
                 $configurationFilePath
@@ -413,16 +448,16 @@ class PHPUnit_Runner_Configuration_Loader_XML
             );
         }
 
-        if ($document->documentElement->hasAttribute('printerClass')) {
+        if ($root->hasAttribute('printerClass')) {
             $configuration->setPrinterClass(
-              (string)$document->documentElement->getAttribute('printerClass')
+              (string)$root->getAttribute('printerClass')
             );
         }
 
-        if ($document->documentElement->hasAttribute('printerFile')) {
+        if ($root->hasAttribute('printerFile')) {
             $configuration->setPrinterFile(
               $this->toAbsolutePath(
-                (string)$document->documentElement->getAttribute('printerFile'),
+                (string)$root->getAttribute('printerFile'),
                 $configurationFilePath
               )
             );
@@ -431,19 +466,17 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
      */
-    private function handleSeleniumConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handleSeleniumConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
     {
     }
 
     /**
      * @param PHPUnit_Runner_Configuration $configuration
-     * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
      */
-    private function handleTestSuiteConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handleTestSuiteConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
     {
     }
 
