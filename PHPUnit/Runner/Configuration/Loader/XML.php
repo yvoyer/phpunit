@@ -62,10 +62,20 @@ class PHPUnit_Runner_Configuration_Loader_XML
      */
     public function load(PHPUnit_Runner_Configuration $configuration, $filename)
     {
+        $filename = realpath($filename);
         $document = PHPUnit_Util_XML::loadFile($filename, FALSE, TRUE);
         $xpath    = new DOMXPath($document);
 
         $this->handleFilterConfiguration($configuration, $document, $xpath);
+        $this->handleGroupConfiguration($configuration, $document, $xpath);
+        $this->handleListenerConfiguration($configuration, $document, $xpath);
+        $this->handleLoggingConfiguration($configuration, $document, $xpath);
+        $this->handlePhpConfiguration($configuration, $document, $xpath);
+        $this->handleRunnerConfiguration($configuration, $document, $xpath);
+        $this->handleSeleniumConfiguration($configuration, $document, $xpath);
+        $this->handleTestSuiteConfiguration($configuration, $document, $xpath);
+
+        $configuration->addSource($filename);
     }
 
     /**
@@ -134,6 +144,85 @@ class PHPUnit_Runner_Configuration_Loader_XML
         foreach ($this->readFilterFiles($xpath, 'filter/whitelist/exclude/file') as $file) {
             $configuration->addFileToWhitelistExclude($file);
         }
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleGroupConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+        foreach ($xpath->query('groups/include/group') as $group) {
+            $configuration->addGroup((string)$group->nodeValue);
+        }
+
+        foreach ($xpath->query('groups/exclude/group') as $group) {
+            $configuration->addExcludeGroup((string)$group->nodeValue);
+        }
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleListenerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleLoggingConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handlePhpConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleRunnerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleSeleniumConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+    }
+
+    /**
+     * @param PHPUnit_Runner_Configuration $configuration
+     * @param DOMDocument                  $document
+     * @param DOMXPath                     $xpath
+     */
+    private function handleTestSuiteConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    {
+    }
+
+    /**
+     * @param  DOMElement $testSuiteNode
+     * @param  mixed      $testSuiteFilter
+     * @return PHPUnit_Framework_TestSuite
+     */
+    private function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = NULL)
+    {
     }
 
     /**

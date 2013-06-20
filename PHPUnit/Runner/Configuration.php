@@ -128,6 +128,8 @@ class PHPUnit_Runner_Configuration
     private $strict = FALSE;
     private $verbose = FALSE;
 
+    private $sources = array();
+
     public static function getInstance()
     {
         if (self::$instance === NULL) {
@@ -147,6 +149,11 @@ class PHPUnit_Runner_Configuration
 
     private function __wakeup()
     {
+    }
+
+    public function getSources()
+    {
+        return $this->sources;
     }
 
     public function getCacheTokens()
@@ -374,6 +381,11 @@ class PHPUnit_Runner_Configuration
         return $this->verbose;
     }
 
+    public function addSource($source)
+    {
+        $this->sources[] = $source;
+    }
+
     public function addDirectoryToBlacklistInclude(array $directory)
     {
         $this->blacklist['include']['directory'][] = $directory;
@@ -556,14 +568,14 @@ class PHPUnit_Runner_Configuration
         $this->convertWarningsToExceptions = $flag;
     }
 
-    public function setGroups(array $groups)
+    public function addGroup($group)
     {
-        $this->groups = $groups;
+        $this->groups[] = $group;
     }
 
-    public function setExcludeGroups(array $groups)
+    public function addExcludeGroup($group)
     {
-        $this->excludeGroups = $groups;
+        $this->excludeGroups[] = $group;
     }
 
     public function setStopOnError($flag)

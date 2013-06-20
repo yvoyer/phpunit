@@ -76,9 +76,13 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
      */
     public function testConfigurationCanBeLoadedFromXMLFile()
     {
-        $this->loader->load(
-          $this->configuration,
-          __DIR__ . '/../../../_files/configuration.xml'
+        $file = __DIR__ . '/../../../_files/configuration.xml';
+
+        $this->loader->load($this->configuration, $file);
+
+        $this->assertEquals(
+          array(realpath($file)),
+          $this->configuration->getSources()
         );
 
         $this->assertTrue($this->configuration->getAddUncoveredFilesFromWhitelist());
@@ -147,5 +151,8 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
           ),
           $this->configuration->getWhitelist()
         );
+
+        $this->assertEquals(array('name'), $this->configuration->getGroups());
+        $this->assertEquals(array('name'), $this->configuration->getExcludeGroups());
     }
 }
