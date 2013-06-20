@@ -179,5 +179,17 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/path/to/bootstrap.php', $this->configuration->getBootstrap());
         $this->assertEquals('PHPUnit_Runner_StandardTestSuiteLoader', $this->configuration->getTestSuiteLoaderClass());
         $this->assertEquals('PHPUnit_TextUI_ResultPrinter', $this->configuration->getPrinterClass());
+
+        $this->assertEquals(array('/usr/local/src/phpunit/Tests/_files/.', '/path/to/lib'), $this->configuration->getIncludePaths());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getIniSettings());
+        $this->assertEquals(array('FOO' => FALSE, 'BAR' => TRUE), $this->configuration->getConstants());
+        $this->assertEquals(array('foo' => FALSE), $this->configuration->getGlobalVariables());
+        $this->assertEquals(array('foo' => TRUE), $this->configuration->getEnvVariables());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getPostVariables());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getGetVariables());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getCookieVariables());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getServerVariables());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getFilesVariables());
+        $this->assertEquals(array('foo' => 'bar'), $this->configuration->getRequestVariables());
     }
 }

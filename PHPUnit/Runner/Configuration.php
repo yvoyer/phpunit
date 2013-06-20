@@ -659,59 +659,103 @@ class PHPUnit_Runner_Configuration
         $this->testSuiteLoaderClass = $class;
     }
 
-    public function setIncludePaths(array $includePaths)
+    public function addIncludePath($includePath)
     {
-        $this->includePaths = $includePaths;
+        if (!is_string($includePath)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->includePaths[] = $includePath;
     }
 
-    public function setIniSettings(array $iniSettings)
+    public function addIniSetting($key, $value)
     {
-        $this->iniSettings = $iniSettings;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->iniSettings[$key] = $value;
     }
 
-    public function setConstants(array $constants)
+    public function addConstant($key, $value)
     {
-        $this->constants = $constants;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->constants[$key] = $value;
     }
 
-    public function setGlobalVariables(array $globalVariables)
+    public function addGlobalVariable($key, $value)
     {
-        $this->globalVariables = $globalVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->globalVariables[$key] = $value;
     }
 
-    public function setEnvVariables(array $envVariables)
+    public function addEnvVariable($key, $value)
     {
-        $this->envVariables = $envVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->envVariables[$key] = $value;
     }
 
-    public function setPostVariables(array $postVariables)
+    public function addPostVariable($key, $value)
     {
-        $this->postVariables = $postVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->postVariables[$key] = $value;
     }
 
-    public function setGetVariables(array $getVariables)
+    public function addGetVariable($key, $value)
     {
-        $this->getVariables = $getVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->getVariables[$key] = $value;
     }
 
-    public function setCookieVariables(array $cookieVariables)
+    public function addCookieVariable($key, $value)
     {
-        $this->cookieVariables = $cookieVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->cookieVariables[$key] = $value;
     }
 
-    public function setServerVariables(array $serverVariables)
+    public function addServerVariable($key, $value)
     {
-        $this->serverVariables = $serverVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->serverVariables[$key] = $value;
     }
 
-    public function setFilesVariables(array $filesVariables)
+    public function addFilesVariable($key, $value)
     {
-        $this->filesVariables = $filesVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->filesVariables[$key] = $value;
     }
 
-    public function setRequestVariables(array $requestVariables)
+    public function addRequestVariable($key, $value)
     {
-        $this->requestVariables = $requestVariables;
+        if (!is_string($key)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->requestVariables[$key] = $value;
     }
 
     public function setBootstrap($bootstrap)

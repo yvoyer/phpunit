@@ -71,7 +71,7 @@ class PHPUnit_Runner_Configuration_Loader_XML
         $this->handleGroupConfiguration($configuration, $document, $xpath);
         $this->handleListenerConfiguration($configuration, $document, $xpath);
         $this->handleLoggingConfiguration($configuration, $document, $xpath);
-        $this->handlePhpConfiguration($configuration, $document, $xpath);
+        $this->handlePhpConfiguration($configuration, $document, $xpath, $configurationFilePath);
         $this->handleRunnerConfiguration($configuration, $document, $xpath, $configurationFilePath);
         $this->handleSeleniumConfiguration($configuration, $document, $xpath);
         $this->handleTestSuiteConfiguration($configuration, $document, $xpath);
@@ -182,9 +182,47 @@ class PHPUnit_Runner_Configuration_Loader_XML
      * @param PHPUnit_Runner_Configuration $configuration
      * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
+     * @param string                       $configurationFilePath
      */
-    private function handlePhpConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handlePhpConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath, $configurationFilePath)
     {
+        foreach ($xpath->query('php/includePath') as $includePath) {
+            $configuration->addIncludePath(
+              $this->toAbsolutePath(
+                (string)$includePath->nodeValue,
+                $configurationFilePath
+              )
+            );
+        }
+
+        foreach ($xpath->query('php/ini') as $ini) {
+            $configuration->addIniSetting(
+              (string)$ini->getAttribute('name'),
+              (string)$ini->getAttribute('value')
+            );
+        }
+
+        foreach ($xpath->query('php/const') as $const) {
+            $configuration->addConstant(
+              (string)$const->getAttribute('name'),
+              $this->getBoolean((string)$const->getAttribute('value'))
+            );
+        }
+
+        foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+            foreach ($xpath->query('php/' . $array) as $var) {
+                $name  = (string)$var->getAttribute('name');
+                $value = $this->getBoolean((string)$var->getAttribute('value'));
+
+                if ($array == 'var') {
+                    $method = 'addGlobalVariable';
+                } else {
+                    $method = 'add' . ucfirst($array) . 'Variable';
+                }
+
+                $configuration->$method($name, $value);
+            }
+        }
     }
 
     /**
@@ -419,6 +457,23 @@ class PHPUnit_Runner_Configuration_Loader_XML
     }
 
     /**
+     * @param  mixed $value
+     * @return mixed
+     */
+    private function getBoolean($value)
+    {
+        if (strtolower($value) == 'false') {
+            return FALSE;
+        }
+
+        else if (strtolower($value) == 'true') {
+            return TRUE;
+        }
+
+        return $value;
+    }
+
+    /**
      * @param  PHPUnit_Runner_Configuration $configuration
      * @param  string                       $method
      * @param  mixed                        $value
@@ -426,12 +481,10 @@ class PHPUnit_Runner_Configuration_Loader_XML
      */
     private function setBoolean(PHPUnit_Runner_Configuration $configuration, $method, $value)
     {
-        if (strtolower($value) == 'false') {
-            $configuration->$method(FALSE);
-        }
+        $value = $this->getBoolean($value);
 
-        else if (strtolower($value) == 'true') {
-            $configuration->$method(TRUE);
+        if (is_bool($value)) {
+            $configuration->$method($value);
         }
     }
 
