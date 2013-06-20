@@ -66,7 +66,7 @@ class PHPUnit_Runner_Configuration_Loader_XML
         $document = PHPUnit_Util_XML::loadFile($filename, FALSE, TRUE);
         $xpath    = new DOMXPath($document);
 
-        $this->handleFilterConfiguration($configuration, $document, $xpath);
+        $this->handleFilterConfiguration($configuration, $document, $xpath, dirname($filename));
         $this->handleGroupConfiguration($configuration, $document, $xpath);
         $this->handleListenerConfiguration($configuration, $document, $xpath);
         $this->handleLoggingConfiguration($configuration, $document, $xpath);
@@ -82,8 +82,9 @@ class PHPUnit_Runner_Configuration_Loader_XML
      * @param PHPUnit_Runner_Configuration $configuration
      * @param DOMDocument                  $document
      * @param DOMXPath                     $xpath
+     * @param string                       $configurationFilePath
      */
-    private function handleFilterConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath)
+    private function handleFilterConfiguration(PHPUnit_Runner_Configuration $configuration, DOMDocument $document, DOMXPath $xpath, $configurationFilePath)
     {
         $tmp = $xpath->query('filter/whitelist');
 
@@ -113,35 +114,35 @@ class PHPUnit_Runner_Configuration_Loader_XML
             }
         }
 
-        foreach ($this->readFilterDirectories($xpath, 'filter/blacklist/directory') as $dir) {
+        foreach ($this->readFilterDirectories($xpath, 'filter/blacklist/directory', $configurationFilePath) as $dir) {
             $configuration->addDirectoryToBlacklistInclude($dir);
         }
 
-        foreach ($this->readFilterFiles($xpath, 'filter/blacklist/file') as $file) {
+        foreach ($this->readFilterFiles($xpath, 'filter/blacklist/file', $configurationFilePath) as $file) {
             $configuration->addFileToBlacklistInclude($file);
         }
 
-        foreach ($this->readFilterDirectories($xpath, 'filter/blacklist/exclude/directory') as $dir) {
+        foreach ($this->readFilterDirectories($xpath, 'filter/blacklist/exclude/directory', $configurationFilePath) as $dir) {
             $configuration->addDirectoryToBlacklistExclude($dir);
         }
 
-        foreach ($this->readFilterFiles($xpath, 'filter/blacklist/exclude/file') as $file) {
+        foreach ($this->readFilterFiles($xpath, 'filter/blacklist/exclude/file', $configurationFilePath) as $file) {
             $configuration->addFileToBlacklistExclude($file);
         }
 
-        foreach ($this->readFilterDirectories($xpath, 'filter/whitelist/directory') as $dir) {
+        foreach ($this->readFilterDirectories($xpath, 'filter/whitelist/directory', $configurationFilePath) as $dir) {
             $configuration->addDirectoryToWhitelistInclude($dir);
         }
 
-        foreach ($this->readFilterFiles($xpath, 'filter/whitelist/file') as $file) {
+        foreach ($this->readFilterFiles($xpath, 'filter/whitelist/file', $configurationFilePath) as $file) {
             $configuration->addFileToWhitelistInclude($file);
         }
 
-        foreach ($this->readFilterDirectories($xpath, 'filter/whitelist/exclude/directory') as $dir) {
+        foreach ($this->readFilterDirectories($xpath, 'filter/whitelist/exclude/directory', $configurationFilePath) as $dir) {
             $configuration->addDirectoryToWhitelistExclude($dir);
         }
 
-        foreach ($this->readFilterFiles($xpath, 'filter/whitelist/exclude/file') as $file) {
+        foreach ($this->readFilterFiles($xpath, 'filter/whitelist/exclude/file', $configurationFilePath) as $file) {
             $configuration->addFileToWhitelistExclude($file);
         }
     }
@@ -254,9 +255,10 @@ class PHPUnit_Runner_Configuration_Loader_XML
     /**
      * @param  DOMXPath $xpath
      * @param  string   $query
+     * @param  string   $configurationFilePath
      * @return array
      */
-    private function readFilterDirectories(DOMXPath $xpath, $query)
+    private function readFilterDirectories(DOMXPath $xpath, $query, $configurationFilePath)
     {
         $directories = array();
 
@@ -280,7 +282,10 @@ class PHPUnit_Runner_Configuration_Loader_XML
             }
 
             $directories[] = array(
-              'path'   => $this->toAbsolutePath((string)$directory->nodeValue),
+              'path'   => $this->toAbsolutePath(
+                            (string)$directory->nodeValue,
+                            $configurationFilePath
+                          ),
               'prefix' => $prefix,
               'suffix' => $suffix,
               'group'  => $group
@@ -293,14 +298,18 @@ class PHPUnit_Runner_Configuration_Loader_XML
     /**
      * @param  DOMXPath $xpath
      * @param  string   $query
+     * @param  string   $configurationFilePath
      * @return array
      */
-    private function readFilterFiles(DOMXPath $xpath, $query)
+    private function readFilterFiles(DOMXPath $xpath, $query, $configurationFilePath)
     {
         $files = array();
 
         foreach ($xpath->query($query) as $file) {
-            $files[] = $this->toAbsolutePath((string)$file->nodeValue);
+            $files[] = $this->toAbsolutePath(
+              (string)$file->nodeValue,
+              $configurationFilePath
+            );
         }
 
         return $files;
@@ -308,10 +317,11 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
     /**
      * @param  string  $path
+     * @param  string  $configurationFilePath
      * @param  boolean $useIncludePath
      * @return string
      */
-    private function toAbsolutePath($path, $useIncludePath = FALSE)
+    private function toAbsolutePath($path, $configurationFilePath, $useIncludePath = FALSE)
     {
         // Check whether the path is already absolute.
         if ($path[0] === '/' || $path[0] === '\\' ||
@@ -325,7 +335,7 @@ class PHPUnit_Runner_Configuration_Loader_XML
             return $path;
         }
 
-        $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+        $file = $configurationFilePath . DIRECTORY_SEPARATOR . $path;
 
         if ($useIncludePath && !file_exists($file)) {
             $includePathFile = stream_resolve_include_path($path);
