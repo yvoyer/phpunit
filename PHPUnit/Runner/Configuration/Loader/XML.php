@@ -74,7 +74,7 @@ class PHPUnit_Runner_Configuration_Loader_XML
         $this->handlePhpConfiguration($configuration, $xpath, $configurationFilePath);
         $this->handleRunnerConfiguration($configuration, $document->documentElement, $configurationFilePath);
         $this->handleSeleniumConfiguration($configuration, $xpath);
-        $this->handleTestSuiteConfiguration($configuration, $xpath);
+        $this->handleTestSuiteConfiguration($configuration, $xpath, $configurationFilePath);
 
         $configuration->addSource($filename);
     }
@@ -560,18 +560,144 @@ class PHPUnit_Runner_Configuration_Loader_XML
     /**
      * @param PHPUnit_Runner_Configuration $configuration
      * @param DOMXPath                     $xpath
+     * @param string                       $configurationFilePath
      */
-    private function handleTestSuiteConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
+    private function handleTestSuiteConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath, $configurationFilePath)
     {
+        $testSuiteNodes = $xpath->query('testsuites/testsuite');
+
+        if ($testSuiteNodes->length == 0) {
+            $testSuiteNodes = $xpath->query('testsuite');
+        }
+
+        if ($testSuiteNodes->length == 1) {
+            $configuration->setTestSuite(
+              $this->getTestSuite(
+                $testSuiteNodes->item(0), $configurationFilePath
+              )
+            );
+        }
+
+        if ($testSuiteNodes->length > 1) {
+            $suite = new PHPUnit_Framework_TestSuite;
+
+            foreach ($testSuiteNodes as $testSuiteNode) {
+                $suite->addTestSuite(
+                  $this->getTestSuite($testSuiteNode, $configurationFilePath)
+                );
+            }
+
+            $configuration->setTestSuite($suite);
+        }
     }
 
     /**
      * @param  DOMElement $testSuiteNode
-     * @param  mixed      $testSuiteFilter
+     * @param  string     $configurationFilePath
      * @return PHPUnit_Framework_TestSuite
      */
-    private function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = NULL)
+    private function getTestSuite(DOMElement $testSuiteNode, $configurationFilePath)
     {
+        if ($testSuiteNode->hasAttribute('name')) {
+            $suite = new PHPUnit_Framework_TestSuite(
+              (string)$testSuiteNode->getAttribute('name')
+            );
+        } else {
+            $suite = new PHPUnit_Framework_TestSuite;
+        }
+
+        $exclude = array();
+
+        foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
+            $exclude[] = $this->toAbsolutePath(
+              (string)$excludeNode->nodeValue, $configurationFilePath
+            );
+        }
+
+        $fileIteratorFacade = new File_Iterator_Facade;
+
+        foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            $directory = (string)$directoryNode->nodeValue;
+
+            if (empty($directory)) {
+                continue;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$directoryNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$directoryNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+                continue;
+            }
+
+            if ($directoryNode->hasAttribute('prefix')) {
+                $prefix = (string)$directoryNode->getAttribute('prefix');
+            } else {
+                $prefix = '';
+            }
+
+            if ($directoryNode->hasAttribute('suffix')) {
+                $suffix = (string)$directoryNode->getAttribute('suffix');
+            } else {
+                $suffix = 'Test.php';
+            }
+
+            $files = $fileIteratorFacade->getFilesAsArray(
+              $this->toAbsolutePath($directory, $configurationFilePath),
+              $suffix,
+              $prefix,
+              $exclude
+            );
+
+            $suite->addTestFiles($files);
+        }
+
+        foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
+            $file = (string)$fileNode->nodeValue;
+
+            if (empty($file)) {
+                continue;
+            }
+
+            $file = $fileIteratorFacade->getFilesAsArray(
+              $this->toAbsolutePath($file, $configurationFilePath)
+            );
+
+            if (!isset($file[0])) {
+                continue;
+            }
+
+            $file = $file[0];
+
+            if ($fileNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$fileNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($fileNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$fileNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+                continue;
+            }
+
+            $suite->addTestFile($file);
+        }
+
+        return $suite;
     }
 
     /**

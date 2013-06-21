@@ -135,6 +135,8 @@ class PHPUnit_Runner_Configuration
 
     private $sources = array();
 
+    private $testSuite;
+
     public static function getInstance()
     {
         if (self::$instance === NULL) {
@@ -404,6 +406,11 @@ class PHPUnit_Runner_Configuration
     public function getVerbose()
     {
         return $this->verbose;
+    }
+
+    public function getTestSuite()
+    {
+        return $this->testSuite;
     }
 
     public function addLogTarget($type, $target)
@@ -876,5 +883,10 @@ class PHPUnit_Runner_Configuration
         }
 
         $this->verbose = $flag;
+    }
+
+    public function setTestSuite(PHPUnit_Framework_TestSuite $testSuite)
+    {
+        $this->testSuite = $testSuite;
     }
 }

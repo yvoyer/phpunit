@@ -226,5 +226,10 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
           ),
           $this->configuration->getBrowsers()
         );
+
+        // TODO: Improve assertion
+        $this->assertInstanceOf(
+          'PHPUnit_Framework_TestSuite', $this->configuration->getTestSuite()
+        );
     }
 }
