@@ -181,33 +181,80 @@ class PHPUnit_Runner_Configuration_Loader_XML
               $configurationFilePath
             );
 
+            $configuration->addLogTarget($type, $target);
+
             switch ($type) {
                 case 'coverage-html': {
                     if ($log->hasAttribute('charset')) {
-                    }
-
-                    if ($log->hasAttribute('lowUpperBound')) {
-                    }
-
-                    if ($log->hasAttribute('highLowerBound')) {
+                        $configuration->setReportCharset(
+                          (string)$log->getAttribute('charset')
+                        );
                     }
 
                     if ($log->hasAttribute('highlight')) {
+                        $this->setBoolean(
+                          $configuration,
+                          'setReportHighlight',
+                          (string)$log->getAttribute(
+                            'highlight'
+                          )
+                        );
+                    }
+
+                    if ($log->hasAttribute('lowUpperBound')) {
+                        $this->setInteger(
+                          $configuration,
+                          'setReportLowUpperBound',
+                          (string)$log->getAttribute(
+                            'lowUpperBound'
+                          )
+                        );
+                    }
+
+                    if ($log->hasAttribute('highLowerBound')) {
+                        $this->setInteger(
+                          $configuration,
+                          'setReportHighLowerBound',
+                          (string)$log->getAttribute(
+                            'highLowerBound'
+                          )
+                        );
                     }
                 }
                 break;
 
                 case 'coverage-text': {
                     if ($log->hasAttribute('showUncoveredFiles')) {
+                        $this->setBoolean(
+                          $configuration,
+                          'setShowUncoveredFiles',
+                          (string)$log->getAttribute(
+                            'showUncoveredFiles'
+                          )
+                        );
                     }
 
                     if ($log->hasAttribute('showOnlySummary')) {
+                        $this->setBoolean(
+                          $configuration,
+                          'setShowOnlySummary',
+                          (string)$log->getAttribute(
+                            'showOnlySummary'
+                          )
+                        );
                     }
                 }
                 break;
 
                 case 'junit': {
                     if ($log->hasAttribute('logIncompleteSkipped')) {
+                        $this->setBoolean(
+                          $configuration,
+                          'setLogIncompleteSkipped',
+                          (string)$log->getAttribute(
+                            'logIncompleteSkipped'
+                          )
+                        );
                     }
                 }
                 break;

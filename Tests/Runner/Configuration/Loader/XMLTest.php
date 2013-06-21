@@ -191,5 +191,27 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('foo' => 'bar'), $this->configuration->getServerVariables());
         $this->assertEquals(array('foo' => 'bar'), $this->configuration->getFilesVariables());
         $this->assertEquals(array('foo' => 'bar'), $this->configuration->getRequestVariables());
+
+        $this->assertEquals(
+          array(
+            'coverage-html' => '/tmp/report',
+            'coverage-clover' => '/tmp/clover.xml',
+            'json' => '/tmp/logfile.json',
+            'plain' => '/tmp/logfile.txt',
+            'tap' => '/tmp/logfile.tap',
+            'junit' => '/tmp/logfile.xml',
+            'testdox-html' => '/tmp/testdox.html',
+            'testdox-text' => '/tmp/testdox.txt'
+          ),
+          $this->configuration->getLogTargets()
+        );
+
+        $this->assertEquals('UTF-8', $this->configuration->getReportCharset());
+        $this->assertFalse($this->configuration->getReportHighlight());
+        $this->assertEquals(35, $this->configuration->getReportLowUpperBound());
+        $this->assertEquals(70, $this->configuration->getReportHighLowerBound());
+        $this->assertFalse($this->configuration->getShowUncoveredFiles());
+        $this->assertFalse($this->configuration->getShowOnlySummary());
+        $this->assertFalse($this->configuration->getLogIncompleteSkipped());
     }
 }

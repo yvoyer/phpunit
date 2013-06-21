@@ -56,6 +56,7 @@ class PHPUnit_Runner_Configuration
 {
     private static $instance;
 
+    private $logTargets = array();
     private $cacheTokens = FALSE;
     private $addUncoveredFilesFromWhitelist = TRUE;
     private $forceCoversAnnotation = FALSE;
@@ -63,8 +64,10 @@ class PHPUnit_Runner_Configuration
     private $processUncoveredFilesFromWhitelist = FALSE;
     private $reportCharset = 'UTF-8';
     private $reportHighlight = FALSE;
-    private $reportHighLowerBound = 70;
     private $reportLowUpperBound = 35;
+    private $reportHighLowerBound = 70;
+    private $showUncoveredFiles = FALSE;
+    private $showOnlySummary = FALSE;
     private $blacklist = array(
               'include' => array(
                 'directory' => array(),
@@ -151,6 +154,11 @@ class PHPUnit_Runner_Configuration
     {
     }
 
+    public function getLogTargets()
+    {
+        return $this->logTargets;
+    }
+
     public function getSources()
     {
         return $this->sources;
@@ -199,6 +207,16 @@ class PHPUnit_Runner_Configuration
     public function getReportLowUpperBound()
     {
         return $this->reportLowUpperBound;
+    }
+
+    public function getShowUncoveredFiles()
+    {
+        return $this->showUncoveredFiles;
+    }
+
+    public function getShowOnlySummary()
+    {
+        return $this->showOnlySummary;
     }
 
     public function getBlacklist()
@@ -381,6 +399,11 @@ class PHPUnit_Runner_Configuration
         return $this->verbose;
     }
 
+    public function addLogTarget($type, $target)
+    {
+        $this->logTargets[$type] = $target;
+    }
+
     public function addSource($source)
     {
         $this->sources[] = $source;
@@ -521,6 +544,24 @@ class PHPUnit_Runner_Configuration
         }
 
         $this->reportLowUpperBound = $bound;
+    }
+
+    public function setShowUncoveredFiles($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->showUncoveredFiles = $flag;
+    }
+
+    public function setShowOnlySummary($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->showOnlySummary = $flag;
     }
 
     public function setBackupGlobals($flag)
