@@ -213,5 +213,18 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->configuration->getShowUncoveredFiles());
         $this->assertFalse($this->configuration->getShowOnlySummary());
         $this->assertFalse($this->configuration->getLogIncompleteSkipped());
+
+        $this->assertEquals(
+          array(
+            array(
+              'name' => 'Firefox on Linux',
+              'browser' => '*firefox /usr/lib/firefox/firefox-bin',
+              'host' => 'my.linux.box',
+              'port' => 4444,
+              'timeout' => 30000
+            )
+          ),
+          $this->configuration->getBrowsers()
+        );
     }
 }

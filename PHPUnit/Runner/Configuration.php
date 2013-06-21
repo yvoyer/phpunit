@@ -131,6 +131,8 @@ class PHPUnit_Runner_Configuration
     private $strict = FALSE;
     private $verbose = FALSE;
 
+    private $browsers = array();
+
     private $sources = array();
 
     public static function getInstance()
@@ -162,6 +164,11 @@ class PHPUnit_Runner_Configuration
     public function getSources()
     {
         return $this->sources;
+    }
+
+    public function getBrowsers()
+    {
+        return $this->browsers;
     }
 
     public function getCacheTokens()
@@ -407,6 +414,11 @@ class PHPUnit_Runner_Configuration
     public function addSource($source)
     {
         $this->sources[] = $source;
+    }
+
+    public function addBrowser(array $browser)
+    {
+        $this->browsers[] = $browser;
     }
 
     public function addDirectoryToBlacklistInclude(array $directory)

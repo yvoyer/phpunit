@@ -517,6 +517,44 @@ class PHPUnit_Runner_Configuration_Loader_XML
      */
     private function handleSeleniumConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
     {
+        foreach ($xpath->query('selenium/browser') as $config) {
+            $name    = (string)$config->getAttribute('name');
+            $browser = (string)$config->getAttribute('browser');
+
+            $host    = 'localhost';
+            $port    = 4444;
+            $timeout = 30000;
+
+            if ($config->hasAttribute('host')) {
+                $host = (string)$config->getAttribute('host');
+            }
+
+            if ($config->hasAttribute('port')) {
+                $tmp = (string)$config->getAttribute('port');
+
+                if (is_numeric($tmp)) {
+                    $port = (int)$tmp;
+                }
+            }
+
+            if ($config->hasAttribute('timeout')) {
+                $tmp = (string)$config->getAttribute('timeout');
+
+                if (is_numeric($tmp)) {
+                    $timeout = (int)$tmp;
+                }
+            }
+
+            $configuration->addBrowser(
+              array(
+                'name'    => $name,
+                'browser' => $browser,
+                'host'    => $host,
+                'port'    => $port,
+                'timeout' => $timeout
+              )
+            );
+        }
     }
 
     /**
