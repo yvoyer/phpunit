@@ -180,7 +180,7 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('PHPUnit_Runner_StandardTestSuiteLoader', $this->configuration->getTestSuiteLoaderClass());
         $this->assertEquals('PHPUnit_TextUI_ResultPrinter', $this->configuration->getPrinterClass());
 
-        $this->assertEquals(array('/usr/local/src/phpunit/Tests/_files/.', '/path/to/lib'), $this->configuration->getIncludePaths());
+        $this->assertEquals(array(realpath(__DIR__ . '/../../../_files') . '/.', '/path/to/lib'), $this->configuration->getIncludePaths());
         $this->assertEquals(array('foo' => 'bar'), $this->configuration->getIniSettings());
         $this->assertEquals(array('FOO' => FALSE, 'BAR' => TRUE), $this->configuration->getConstants());
         $this->assertEquals(array('foo' => FALSE), $this->configuration->getGlobalVariables());
