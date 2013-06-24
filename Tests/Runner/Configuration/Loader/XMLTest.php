@@ -76,14 +76,11 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
      */
     public function testConfigurationCanBeLoadedFromXMLFile()
     {
-        $file = __DIR__ . '/../../../_files/configuration.xml';
+        $file = realpath(__DIR__ . '/../../../_files/configuration.xml');
 
         $this->loader->load($this->configuration, $file);
 
-        $this->assertEquals(
-          array(realpath($file)),
-          $this->configuration->getSources()
-        );
+        $this->assertEquals(array($file), $this->configuration->getSources());
 
         $this->assertTrue($this->configuration->getAddUncoveredFilesFromWhitelist());
         $this->assertFalse($this->configuration->getProcessUncoveredFilesFromWhitelist());
@@ -230,6 +227,37 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         // TODO: Improve assertion
         $this->assertInstanceOf(
           'PHPUnit_Framework_TestSuite', $this->configuration->getTestSuite()
+        );
+
+        $this->assertEquals(
+          array(
+            array(
+              'class' => 'MyListener',
+              'file' => '/optional/path/to/MyListener.php',
+              'arguments' => array(
+                array('Sebastian'),
+                22,
+                'April',
+                19.78,
+                NULL,
+                new StdClass,
+                dirname($file) . '/MyTestFile.php',
+                dirname($file) . '/MyRelativePath'
+              )
+            ),
+            array(
+              'class' => 'IncludePathListener',
+              'file' => dirname($file) . '/ConfigurationTest.php',
+              'arguments' => array(
+              )
+            ),
+            array(
+              'class' => 'CompactArgumentsListener',
+              'file' => '/CompactArgumentsListener.php',
+              'arguments' => array(42)
+            )
+          ),
+          $this->configuration->getListeners()
         );
     }
 }

@@ -69,7 +69,7 @@ class PHPUnit_Runner_Configuration_Loader_XML
 
         $this->handleFilterConfiguration($configuration, $xpath, $configurationFilePath);
         $this->handleGroupConfiguration($configuration, $xpath);
-        $this->handleListenerConfiguration($configuration, $xpath);
+        $this->handleListenerConfiguration($configuration, $xpath, $configurationFilePath);
         $this->handleLoggingConfiguration($configuration, $xpath, $configurationFilePath);
         $this->handlePhpConfiguration($configuration, $xpath, $configurationFilePath);
         $this->handleRunnerConfiguration($configuration, $document->documentElement, $configurationFilePath);
@@ -161,9 +161,49 @@ class PHPUnit_Runner_Configuration_Loader_XML
     /**
      * @param PHPUnit_Runner_Configuration $configuration
      * @param DOMXPath                     $xpath
+     * @param string                       $configurationFilePath
      */
-    private function handleListenerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath)
+    private function handleListenerConfiguration(PHPUnit_Runner_Configuration $configuration, DOMXPath $xpath, $configurationFilePath)
     {
+        foreach ($xpath->query('listeners/listener') as $listener) {
+            $class     = (string)$listener->getAttribute('class');
+            $file      = '';
+            $arguments = array();
+
+            if ($listener->hasAttribute('file')) {
+                $file = $this->toAbsolutePath(
+                  (string)$listener->getAttribute('file'),
+                  $configurationFilePath,
+                  TRUE
+                );
+            }
+
+            foreach ($listener->childNodes as $node) {
+              if ($node instanceof DOMElement && $node->tagName == 'arguments') {
+                foreach ($node->childNodes as $argument) {
+                    if ($argument instanceof DOMElement) {
+                        if ($argument->tagName == 'file' ||
+                            $argument->tagName == 'directory') {
+                            $arguments[] = $this->toAbsolutePath(
+                              (string)$argument->nodeValue,
+                              $configurationFilePath
+                            );
+                        } else {
+                            $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
+                        }
+                    }
+                }
+              }
+            }
+
+            $configuration->addListener(
+              array(
+                'class'     => $class,
+                'file'      => $file,
+                'arguments' => $arguments
+              )
+            );
+        }
     }
 
     /**

@@ -137,6 +137,8 @@ class PHPUnit_Runner_Configuration
 
     private $testSuite;
 
+    private $listeners = array();
+
     public static function getInstance()
     {
         if (self::$instance === NULL) {
@@ -411,6 +413,11 @@ class PHPUnit_Runner_Configuration
     public function getTestSuite()
     {
         return $this->testSuite;
+    }
+
+    public function getListeners()
+    {
+        return $this->listeners;
     }
 
     public function addLogTarget($type, $target)
@@ -888,5 +895,10 @@ class PHPUnit_Runner_Configuration
     public function setTestSuite(PHPUnit_Framework_TestSuite $testSuite)
     {
         $this->testSuite = $testSuite;
+    }
+
+    public function addListener(array $listener)
+    {
+        $this->listeners[] = $listener;
     }
 }
