@@ -98,6 +98,7 @@ class PHPUnit_Runner_Configuration
 
     private $groups = array();
     private $excludeGroups = array();
+    private $filter;
 
     private $stopOnError = FALSE;
     private $stopOnFailure = FALSE;
@@ -125,6 +126,7 @@ class PHPUnit_Runner_Configuration
 
     private $bootstrap = FALSE;
     private $colors = FALSE;
+    private $debug = FALSE;
     private $logIncompleteSkipped = FALSE;
     private $processIsolation = FALSE;
     private $repeat = FALSE;
@@ -275,6 +277,11 @@ class PHPUnit_Runner_Configuration
         return $this->excludeGroups;
     }
 
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
     public function getStopOnError()
     {
         return $this->stopOnError;
@@ -383,6 +390,11 @@ class PHPUnit_Runner_Configuration
     public function getColors()
     {
         return $this->colors;
+    }
+
+    public function getDebug()
+    {
+        return $this->debug;
     }
 
     public function getLogIncompleteSkipped()
@@ -645,6 +657,17 @@ class PHPUnit_Runner_Configuration
         $this->excludeGroups[] = $group;
     }
 
+    public function setFilter($filter)
+    {
+        if ($filter !== FALSE && preg_match('/^[a-zA-Z0-9_]/', $filter)) {
+            // Escape delimiters in regular expression. Do NOT use preg_quote,
+            // to keep magic characters.
+            $filter = '/' . str_replace('/', '\\/', $filter) . '/';
+        }
+
+        $this->filter = $filter;
+    }
+
     public function setStopOnError($flag)
     {
         if (!is_bool($flag)) {
@@ -843,6 +866,15 @@ class PHPUnit_Runner_Configuration
         }
 
         $this->colors = $flag;
+    }
+
+    public function setDebug($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->debug = $flag;
     }
 
     public function setLogIncompleteSkipped($flag)
