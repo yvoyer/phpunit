@@ -205,8 +205,8 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('UTF-8', $this->configuration->getReportCharset());
         $this->assertFalse($this->configuration->getReportHighlight());
-        $this->assertEquals(35, $this->configuration->getReportLowUpperBound());
-        $this->assertEquals(70, $this->configuration->getReportHighLowerBound());
+        $this->assertEquals(50, $this->configuration->getReportLowUpperBound());
+        $this->assertEquals(90, $this->configuration->getReportHighLowerBound());
         $this->assertFalse($this->configuration->getShowUncoveredFiles());
         $this->assertFalse($this->configuration->getShowOnlySummary());
         $this->assertFalse($this->configuration->getLogIncompleteSkipped());
