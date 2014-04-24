@@ -54,93 +54,292 @@
  */
 class PHPUnit_Runner_Configuration
 {
+    /**
+     * @var PHPUnit_Runner_Configuration
+     */
     private static $instance;
 
+    /**
+     * @var array
+     */
     private $logTargets = array();
-    private $cacheTokens = FALSE;
-    private $addUncoveredFilesFromWhitelist = TRUE;
-    private $forceCoversAnnotation = FALSE;
-    private $mapTestClassNameToCoveredClassName = FALSE;
-    private $processUncoveredFilesFromWhitelist = FALSE;
-    private $reportCharset = 'UTF-8';
-    private $reportHighlight = FALSE;
-    private $reportLowUpperBound = 35;
-    private $reportHighLowerBound = 70;
-    private $showUncoveredFiles = FALSE;
-    private $showOnlySummary = FALSE;
+
+    /**
+     * @var boolean
+     */
+    private $cacheTokens = false;
+
+    /**
+     * @var boolean
+     */
+    private $addUncoveredFilesFromWhitelist = true;
+
+    /**
+     * @var boolean
+     */
+    private $forceCoversAnnotation = false;
+
+    /**
+     * @var boolean
+     */
+    private $mapTestClassNameToCoveredClassName = false;
+
+    /**
+     * @var boolean
+     */
+    private $processUncoveredFilesFromWhitelist = false;
+
+    /**
+     * @var integer
+     */
+    private $reportLowUpperBound = 50;
+
+    /**
+     * @var integer
+     */
+    private $reportHighLowerBound = 90;
+
+    /**
+     * @var boolean
+     */
+    private $showUncoveredFiles = false;
+
+    /**
+     * @var boolean
+     */
+    private $showOnlySummary = false;
+
+    /**
+     * @var array
+     */
     private $blacklist = array(
-              'include' => array(
-                'directory' => array(),
-                'file' => array()
-              ),
-              'exclude' => array(
-                'directory' => array(),
-                'file' => array()
-              )
-            );
+        'include' => array(
+            'directory' => array(),
+            'file' => array()
+        ),
+        'exclude' => array(
+            'directory' => array(),
+            'file' => array()
+        )
+    );
+
+    /**
+     * @var array
+     */
     private $whitelist = array(
-              'include' => array(
-                'directory' => array(),
-                'file' => array()
-              ),
-              'exclude' => array(
-                'directory' => array(),
-                'file' => array()
-              )
-            );
+        'include' => array(
+            'directory' => array(),
+            'file' => array()
+        ),
+        'exclude' => array(
+            'directory' => array(),
+            'file' => array()
+        )
+    );
 
-    private $backupGlobals = TRUE;
-    private $backupStaticAttributes = FALSE;
+    /**
+     * @var boolean
+     */
+    private $backupGlobals = true;
 
-    private $convertErrorsToExceptions = TRUE;
-    private $convertNoticesToExceptions = TRUE;
-    private $convertWarningsToExceptions = TRUE;
+    /**
+     * @var boolean
+     */
+    private $backupStaticAttributes = false;
 
+    /**
+     * @var boolean
+     */
+    private $convertErrorsToExceptions = true;
+
+    /**
+     * @var boolean
+     */
+    private $convertNoticesToExceptions = true;
+
+    /**
+     * @var boolean
+     */
+    private $convertWarningsToExceptions = true;
+
+    /**
+     * @var array
+     */
     private $groups = array();
+
+    /**
+     * @var array
+     */
     private $excludeGroups = array();
+
+    /**
+     * @var string
+     */
     private $filter;
 
-    private $stopOnError = FALSE;
-    private $stopOnFailure = FALSE;
-    private $stopOnIncomplete = FALSE;
-    private $stopOnSkipped = FALSE;
+    /**
+     * @var boolean
+     */
+    private $stopOnError = false;
 
+    /**
+     * @var boolean
+     */
+    private $stopOnFailure = false;
+
+    /**
+     * @var boolean
+     */
+    private $stopOnIncomplete = false;
+
+    /**
+     * @var boolean
+     */
+    private $stopOnSkipped = false;
+
+    /**
+     * @var integer
+     */
     private $timeoutForSmallTests = 1;
+
+    /**
+     * @var integer
+     */
     private $timeoutForMediumTests = 10;
+
+    /**
+     * @var integer
+     */
     private $timeoutForLargeTests = 60;
 
+    /**
+     * @var string
+     */
     private $printerClass = 'PHPUnit_TextUI_ResultPrinter';
+
+    /**
+     * @var string
+     */
     private $testSuiteLoaderClass = 'PHPUnit_Runner_StandardTestSuiteLoader';
 
+    /**
+     * @var array
+     */
     private $includePaths = array();
+
+    /**
+     * @var array
+     */
     private $iniSettings = array();
+
+    /**
+     * @var array
+     */
     private $constants = array();
+
+    /**
+     * @var array
+     */
     private $globalVariables = array();
+
+    /**
+     * @var array
+     */
     private $envVariables = array();
+
+    /**
+     * @var array
+     */
     private $postVariables = array();
+
+    /**
+     * @var array
+     */
     private $getVariables = array();
+
+    /**
+     * @var array
+     */
     private $cookieVariables = array();
+
+    /**
+     * @var array
+     */
     private $serverVariables = array();
+
+    /**
+     * @var array
+     */
     private $filesVariables = array();
+
+    /**
+     * @var array
+     */
     private $requestVariables = array();
 
-    private $bootstrap = FALSE;
-    private $colors = FALSE;
-    private $debug = FALSE;
-    private $logIncompleteSkipped = FALSE;
-    private $processIsolation = FALSE;
-    private $repeat = FALSE;
-    private $strict = FALSE;
-    private $verbose = FALSE;
+    /**
+     * @var string|false
+     */
+    private $bootstrap = false;
 
+    /**
+     * @var boolean
+     */
+    private $colors = false;
+
+    /**
+     * @var boolean
+     */
+    private $debug = false;
+
+    /**
+     * @var boolean
+     */
+    private $logIncompleteSkipped = false;
+
+    /**
+     * @var boolean
+     */
+    private $processIsolation = false;
+
+    /**
+     * @var integer|false
+     */
+    private $repeat = false;
+
+    /**
+     * @var boolean
+     */
+    private $strict = false;
+
+    /**
+     * @var boolean
+     */
+    private $verbose = false;
+
+    /**
+     * @var array
+     */
     private $browsers = array();
 
-    private $sources = array();
-
+    /**
+     * @var PHPUnit_Framework_TestSuite
+     */
     private $testSuite;
 
+    /**
+     * @var array
+     */
     private $listeners = array();
 
+    /**
+     * @var array
+     */
+    private $sources = array();
+
+    /**
+     * @return PHPUnit_Runner_Configuration
+     */
     public static function getInstance()
     {
         if (self::$instance === NULL) {
@@ -150,308 +349,476 @@ class PHPUnit_Runner_Configuration
         return self::$instance;
     }
 
+    /**
+     */
     private function __construct()
     {
     }
 
+    /**
+     */
     private function __clone()
     {
     }
 
+    /**
+     */
     private function __wakeup()
     {
     }
 
-    public function getLogTargets()
-    {
-        return $this->logTargets;
-    }
-
+    /**
+     * @return array
+     */
     public function getSources()
     {
         return $this->sources;
     }
 
+    /**
+     * @return array
+     */
+    public function getLogTargets()
+    {
+        return $this->logTargets;
+    }
+
+    /**
+     * @return array
+     */
     public function getBrowsers()
     {
         return $this->browsers;
     }
 
+    /**
+     * @return boolean
+     */
     public function getCacheTokens()
     {
         return $this->cacheTokens;
     }
 
+    /**
+     * @return boolean
+     */
     public function getAddUncoveredFilesFromWhitelist()
     {
         return $this->addUncoveredFilesFromWhitelist;
     }
 
+    /**
+     * @return boolean
+     */
     public function getForceCoversAnnotation()
     {
         return $this->forceCoversAnnotation;
     }
 
+    /**
+     * @return boolean
+     */
     public function getMapTestClassNameToCoveredClassName()
     {
         return $this->mapTestClassNameToCoveredClassName;
     }
 
+    /**
+     * @return boolean
+     */
     public function getProcessUncoveredFilesFromWhitelist()
     {
         return $this->processUncoveredFilesFromWhitelist;
     }
 
-    public function getReportCharset()
-    {
-        return $this->reportCharset;
-    }
-
-    public function getReportHighlight()
-    {
-        return $this->reportHighlight;
-    }
-
+    /**
+     * @return integer
+     */
     public function getReportHighLowerBound()
     {
         return $this->reportHighLowerBound;
     }
 
+    /**
+     * @return integer
+     */
     public function getReportLowUpperBound()
     {
         return $this->reportLowUpperBound;
     }
 
+    /**
+     * @return boolean
+     */
     public function getShowUncoveredFiles()
     {
         return $this->showUncoveredFiles;
     }
 
+    /**
+     * @return boolean
+     */
     public function getShowOnlySummary()
     {
         return $this->showOnlySummary;
     }
 
+    /**
+     * @return array
+     */
     public function getBlacklist()
     {
         return $this->blacklist;
     }
 
+    /**
+     * @return array
+     */
     public function getWhitelist()
     {
         return $this->whitelist;
     }
 
+    /**
+     * @return boolean
+     */
     public function getBackupGlobals()
     {
         return $this->backupGlobals;
     }
 
+    /**
+     * @return boolean
+     */
     public function getBackupStaticAttributes()
     {
         return $this->backupStaticAttributes;
     }
 
+    /**
+     * @return boolean
+     */
     public function getConvertErrorsToExceptions()
     {
         return $this->convertErrorsToExceptions;
     }
 
+    /**
+     * @return boolean
+     */
     public function getConvertNoticesToExceptions()
     {
         return $this->convertNoticesToExceptions;
     }
 
+    /**
+     * @return boolean
+     */
     public function getConvertWarningsToExceptions()
     {
         return $this->convertWarningsToExceptions;
     }
 
+    /**
+     * @return array
+     */
     public function getGroups()
     {
         return $this->groups;
     }
 
+    /**
+     * @return array
+     */
     public function getExcludeGroups()
     {
         return $this->excludeGroups;
     }
 
+    /**
+     * @return string
+     */
     public function getFilter()
     {
         return $this->filter;
     }
 
+    /**
+     * @return boolean
+     */
     public function getStopOnError()
     {
         return $this->stopOnError;
     }
 
+    /**
+     * @return boolean
+     */
     public function getStopOnFailure()
     {
         return $this->stopOnFailure;
     }
 
+    /**
+     * @return boolean
+     */
     public function getStopOnIncomplete()
     {
         return $this->stopOnIncomplete;
     }
 
+    /**
+     * @return boolean
+     */
     public function getStopOnSkipped()
     {
         return $this->stopOnSkipped;
     }
 
+    /**
+     * @return integer
+     */
     public function getTimeoutForSmallTests()
     {
         return $this->timeoutForSmallTests;
     }
 
+    /**
+     * @return integer
+     */
     public function getTimeoutForMediumTests()
     {
         return $this->timeoutForMediumTests;
     }
 
+    /**
+     * @return integer
+     */
     public function getTimeoutForLargeTests()
     {
         return $this->timeoutForLargeTests;
     }
 
+    /**
+     * @return array
+     */
     public function getIncludePaths()
     {
         return $this->includePaths;
     }
 
+    /**
+     * @return array
+     */
     public function getIniSettings()
     {
         return $this->iniSettings;
     }
 
+    /**
+     * @return array
+     */
     public function getConstants()
     {
         return $this->constants;
     }
 
+    /**
+     * @return array
+     */
     public function getGlobalVariables()
     {
         return $this->globalVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getEnvVariables()
     {
         return $this->envVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getPostVariables()
     {
         return $this->postVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getGetVariables()
     {
         return $this->getVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getCookieVariables()
     {
         return $this->cookieVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getServerVariables()
     {
         return $this->serverVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getFilesVariables()
     {
         return $this->filesVariables;
     }
 
+    /**
+     * @return array
+     */
     public function getRequestVariables()
     {
         return $this->requestVariables;
     }
 
+    /**
+     * @return string|false
+     */
     public function getBootstrap()
     {
         return $this->bootstrap;
     }
 
+    /**
+     * @return string
+     */
     public function getPrinterClass()
     {
         return $this->printerClass;
     }
 
+    /**
+     * @return string
+     */
     public function getTestSuiteLoaderClass()
     {
         return $this->testSuiteLoaderClass;
     }
 
+    /**
+     * @return boolean
+     */
     public function getColors()
     {
         return $this->colors;
     }
 
+    /**
+     * @return boolean
+     */
     public function getDebug()
     {
         return $this->debug;
     }
 
+    /**
+     * @return boolean
+     */
     public function getLogIncompleteSkipped()
     {
         return $this->logIncompleteSkipped;
     }
 
+    /**
+     * @return boolean
+     */
     public function getProcessIsolation()
     {
         return $this->processIsolation;
     }
 
+    /**
+     * @return boolean
+     */
     public function getRepeat()
     {
         return $this->repeat;
     }
 
+    /**
+     * @return boolean
+     */
     public function getStrict()
     {
         return $this->strict;
     }
 
+    /**
+     * @return boolean
+     */
     public function getVerbose()
     {
         return $this->verbose;
     }
 
+    /**
+     * @return PHPUnit_Framework_TestCase
+     */
     public function getTestSuite()
     {
         return $this->testSuite;
     }
 
+    /**
+     * @return array
+     */
     public function getListeners()
     {
         return $this->listeners;
     }
 
-    public function addLogTarget($type, $target)
-    {
-        $this->logTargets[$type] = $target;
-    }
-
+    /**
+     * @param string $source
+     */
     public function addSource($source)
     {
         $this->sources[] = $source;
     }
 
+    /**
+     * @param string $type
+     * @param string $target
+     */
+    public function addLogTarget($type, $target)
+    {
+        $this->logTargets[$type] = $target;
+    }
+
+    /**
+     * @param array $browser
+     */
     public function addBrowser(array $browser)
     {
         $this->browsers[] = $browser;
     }
 
+    /**
+     * @param array $directory
+     */
     public function addDirectoryToBlacklistInclude(array $directory)
     {
         $this->blacklist['include']['directory'][] = $directory;
     }
 
+    /**
+     * @param string $file
+     */
     public function addFileToBlacklistInclude($file)
     {
         if (!is_string($file)) {
@@ -461,11 +828,17 @@ class PHPUnit_Runner_Configuration
         $this->blacklist['include']['file'][] = $file;
     }
 
+    /**
+     * @param array $directory
+     */
     public function addDirectoryToBlacklistExclude(array $directory)
     {
         $this->blacklist['exclude']['directory'][] = $directory;
     }
 
+    /**
+     * @param string $file
+     */
     public function addFileToBlacklistExclude($file)
     {
         if (!is_string($file)) {
@@ -475,11 +848,17 @@ class PHPUnit_Runner_Configuration
         $this->blacklist['exclude']['file'][] = $file;
     }
 
+    /**
+     * @param array $directory
+     */
     public function addDirectoryToWhitelistInclude(array $directory)
     {
         $this->whitelist['include']['directory'][] = $directory;
     }
 
+    /**
+     * @param string $file
+     */
     public function addFileToWhitelistInclude($file)
     {
         if (!is_string($file)) {
@@ -489,11 +868,17 @@ class PHPUnit_Runner_Configuration
         $this->whitelist['include']['file'][] = $file;
     }
 
+    /**
+     * @param array $directory
+     */
     public function addDirectoryToWhitelistExclude(array $directory)
     {
         $this->whitelist['exclude']['directory'][] = $directory;
     }
 
+    /**
+     * @param string $file
+     */
     public function addFileToWhitelistExclude($file)
     {
         if (!is_string($file)) {
@@ -503,6 +888,9 @@ class PHPUnit_Runner_Configuration
         $this->whitelist['exclude']['file'][] = $file;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setCacheTokens($flag)
     {
         if (!is_bool($flag)) {
@@ -512,6 +900,9 @@ class PHPUnit_Runner_Configuration
         $this->cacheTokens = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setAddUncoveredFilesFromWhitelist($flag)
     {
         if (!is_bool($flag)) {
@@ -521,6 +912,9 @@ class PHPUnit_Runner_Configuration
         $this->addUncoveredFilesFromWhitelist = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setForceCoversAnnotation($flag)
     {
         if (!is_bool($flag)) {
@@ -530,6 +924,9 @@ class PHPUnit_Runner_Configuration
         $this->forceCoversAnnotation = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setMapTestClassNameToCoveredClassName($flag)
     {
         if (!is_bool($flag)) {
@@ -539,6 +936,9 @@ class PHPUnit_Runner_Configuration
         $this->mapTestClassNameToCoveredClassName = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setProcessUncoveredFilesFromWhitelist($flag)
     {
         if (!is_bool($flag)) {
@@ -548,24 +948,9 @@ class PHPUnit_Runner_Configuration
         $this->processUncoveredFilesFromWhitelist = $flag;
     }
 
-    public function setReportCharset($charset)
-    {
-        if (!is_string($charset)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        $this->charset = $charset;
-    }
-
-    public function setReportHighlight($flag)
-    {
-        if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
-        $this->reportHighlight = $flag;
-    }
-
+    /**
+     * @param integer $bound
+     */
     public function setReportHighLowerBound($bound)
     {
         if (!is_int($bound)) {
@@ -575,6 +960,9 @@ class PHPUnit_Runner_Configuration
         $this->reportHighLowerBound = $bound;
     }
 
+    /**
+     * @param integer $bound
+     */
     public function setReportLowUpperBound($bound)
     {
         if (!is_int($bound)) {
@@ -584,6 +972,9 @@ class PHPUnit_Runner_Configuration
         $this->reportLowUpperBound = $bound;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setShowUncoveredFiles($flag)
     {
         if (!is_bool($flag)) {
@@ -593,6 +984,9 @@ class PHPUnit_Runner_Configuration
         $this->showUncoveredFiles = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setShowOnlySummary($flag)
     {
         if (!is_bool($flag)) {
@@ -602,6 +996,9 @@ class PHPUnit_Runner_Configuration
         $this->showOnlySummary = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setBackupGlobals($flag)
     {
         if (!is_bool($flag)) {
@@ -611,6 +1008,9 @@ class PHPUnit_Runner_Configuration
         $this->backupGlobals = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setBackupStaticAttributes($flag)
     {
         if (!is_bool($flag)) {
@@ -620,6 +1020,9 @@ class PHPUnit_Runner_Configuration
         $this->backupStaticAttributes = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setConvertErrorsToExceptions($flag)
     {
         if (!is_bool($flag)) {
@@ -629,6 +1032,9 @@ class PHPUnit_Runner_Configuration
         $this->convertErrorsToExceptions = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setConvertNoticesToExceptions($flag)
     {
         if (!is_bool($flag)) {
@@ -638,6 +1044,9 @@ class PHPUnit_Runner_Configuration
         $this->convertNoticesToExceptions = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setConvertWarningsToExceptions($flag)
     {
         if (!is_bool($flag)) {
@@ -647,19 +1056,28 @@ class PHPUnit_Runner_Configuration
         $this->convertWarningsToExceptions = $flag;
     }
 
+    /**
+     * @param string $group
+     */
     public function addGroup($group)
     {
         $this->groups[] = $group;
     }
 
+    /**
+     * @param string $group
+     */
     public function addExcludeGroup($group)
     {
         $this->excludeGroups[] = $group;
     }
 
+    /**
+     * @param string $filter
+     */
     public function setFilter($filter)
     {
-        if ($filter !== FALSE && preg_match('/^[a-zA-Z0-9_]/', $filter)) {
+        if ($filter !== false && preg_match('/^[a-zA-Z0-9_]/', $filter)) {
             // Escape delimiters in regular expression. Do NOT use preg_quote,
             // to keep magic characters.
             $filter = '/' . str_replace('/', '\\/', $filter) . '/';
@@ -668,6 +1086,9 @@ class PHPUnit_Runner_Configuration
         $this->filter = $filter;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setStopOnError($flag)
     {
         if (!is_bool($flag)) {
@@ -677,6 +1098,9 @@ class PHPUnit_Runner_Configuration
         $this->stopOnError = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setStopOnFailure($flag)
     {
         if (!is_bool($flag)) {
@@ -686,6 +1110,9 @@ class PHPUnit_Runner_Configuration
         $this->stopOnFailure = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setStopOnIncomplete($flag)
     {
         if (!is_bool($flag)) {
@@ -695,6 +1122,9 @@ class PHPUnit_Runner_Configuration
         $this->stopOnIncomplete = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setStopOnSkipped($flag)
     {
         if (!is_bool($flag)) {
@@ -704,6 +1134,9 @@ class PHPUnit_Runner_Configuration
         $this->stopOnSkipped = $flag;
     }
 
+    /**
+     * @param integer $timeout
+     */
     public function setTimeoutForSmallTests($timeout)
     {
         if (!is_int($timeout)) {
@@ -713,6 +1146,9 @@ class PHPUnit_Runner_Configuration
         $this->timeoutForSmallTests = $timeout;
     }
 
+    /**
+     * @param integer $timeout
+     */
     public function setTimeoutForMediumTests($timeout)
     {
         if (!is_int($timeout)) {
@@ -722,6 +1158,9 @@ class PHPUnit_Runner_Configuration
         $this->timeoutForMediumTests = $timeout;
     }
 
+    /**
+     * @param integer $timeout
+     */
     public function setTimeoutForLargeTests($timeout)
     {
         if (!is_int($timeout)) {
@@ -731,6 +1170,9 @@ class PHPUnit_Runner_Configuration
         $this->timeoutForLargeTests = $timeout;
     }
 
+    /**
+     * @param string $class
+     */
     public function setPrinterClass($class)
     {
         if (!is_string($class)) {
@@ -740,6 +1182,9 @@ class PHPUnit_Runner_Configuration
         $this->printerClass = $class;
     }
 
+    /**
+     * @param string $class
+     */
     public function setTestSuiteLoaderClass($class)
     {
         if (!is_string($class)) {
@@ -749,6 +1194,9 @@ class PHPUnit_Runner_Configuration
         $this->testSuiteLoaderClass = $class;
     }
 
+    /**
+     * @param string $includePath
+     */
     public function addIncludePath($includePath)
     {
         if (!is_string($includePath)) {
@@ -758,6 +1206,10 @@ class PHPUnit_Runner_Configuration
         $this->includePaths[] = $includePath;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addIniSetting($key, $value)
     {
         if (!is_string($key)) {
@@ -767,6 +1219,10 @@ class PHPUnit_Runner_Configuration
         $this->iniSettings[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addConstant($key, $value)
     {
         if (!is_string($key)) {
@@ -776,6 +1232,10 @@ class PHPUnit_Runner_Configuration
         $this->constants[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addGlobalVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -785,6 +1245,10 @@ class PHPUnit_Runner_Configuration
         $this->globalVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addEnvVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -794,6 +1258,10 @@ class PHPUnit_Runner_Configuration
         $this->envVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addPostVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -803,6 +1271,10 @@ class PHPUnit_Runner_Configuration
         $this->postVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addGetVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -812,6 +1284,10 @@ class PHPUnit_Runner_Configuration
         $this->getVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addCookieVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -821,6 +1297,10 @@ class PHPUnit_Runner_Configuration
         $this->cookieVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addServerVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -830,6 +1310,10 @@ class PHPUnit_Runner_Configuration
         $this->serverVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addFilesVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -839,6 +1323,10 @@ class PHPUnit_Runner_Configuration
         $this->filesVariables[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function addRequestVariable($key, $value)
     {
         if (!is_string($key)) {
@@ -848,9 +1336,12 @@ class PHPUnit_Runner_Configuration
         $this->requestVariables[$key] = $value;
     }
 
+    /**
+     * @param string|false $bootstrap
+     */
     public function setBootstrap($bootstrap)
     {
-        if ($bootstrap !== FALSE && !is_string($bootstrap)) {
+        if ($bootstrap !== false && !is_string($bootstrap)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               1, 'string or false'
             );
@@ -859,6 +1350,9 @@ class PHPUnit_Runner_Configuration
         $this->bootstrap = $bootstrap;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setColors($flag)
     {
         if (!is_bool($flag)) {
@@ -868,6 +1362,9 @@ class PHPUnit_Runner_Configuration
         $this->colors = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setDebug($flag)
     {
         if (!is_bool($flag)) {
@@ -877,6 +1374,9 @@ class PHPUnit_Runner_Configuration
         $this->debug = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setLogIncompleteSkipped($flag)
     {
         if (!is_bool($flag)) {
@@ -886,6 +1386,9 @@ class PHPUnit_Runner_Configuration
         $this->logIncompleteSkipped = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setProcessIsolation($flag)
     {
         if (!is_bool($flag)) {
@@ -895,9 +1398,12 @@ class PHPUnit_Runner_Configuration
         $this->processIsolation = $flag;
     }
 
+    /**
+     * @param integer|false $repeat
+     */
     public function setRepeat($repeat)
     {
-        if ($repeat !== FALSE && !is_int($repeat)) {
+        if ($repeat !== false && !is_int($repeat)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               1, 'integer or false'
             );
@@ -906,6 +1412,9 @@ class PHPUnit_Runner_Configuration
         $this->repeat = $repeat;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setStrict($flag)
     {
         if (!is_bool($flag)) {
@@ -915,6 +1424,9 @@ class PHPUnit_Runner_Configuration
         $this->strict = $flag;
     }
 
+    /**
+     * @param boolean $flag
+     */
     public function setVerbose($flag)
     {
         if (!is_bool($flag)) {
@@ -924,11 +1436,17 @@ class PHPUnit_Runner_Configuration
         $this->verbose = $flag;
     }
 
+    /**
+     * @param PHPUnit_Framework_TestSuite $testSuite
+     */
     public function setTestSuite(PHPUnit_Framework_TestSuite $testSuite)
     {
         $this->testSuite = $testSuite;
     }
 
+    /**
+     * @param array $listener
+     */
     public function addListener(array $listener)
     {
         $this->listeners[] = $listener;
