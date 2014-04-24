@@ -166,7 +166,6 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->configuration->getStopOnFailure());
         $this->assertFalse($this->configuration->getStopOnIncomplete());
         $this->assertFalse($this->configuration->getStopOnSkipped());
-        $this->assertFalse($this->configuration->getStrict());
         $this->assertFalse($this->configuration->getVerbose());
 
         $this->assertEquals(1, $this->configuration->getTimeoutForSmallTests());
@@ -203,8 +202,6 @@ class Runner_Configuration_Loader_XMLTest extends PHPUnit_Framework_TestCase
           $this->configuration->getLogTargets()
         );
 
-        $this->assertEquals('UTF-8', $this->configuration->getReportCharset());
-        $this->assertFalse($this->configuration->getReportHighlight());
         $this->assertEquals(50, $this->configuration->getReportLowUpperBound());
         $this->assertEquals(90, $this->configuration->getReportHighLowerBound());
         $this->assertFalse($this->configuration->getShowUncoveredFiles());

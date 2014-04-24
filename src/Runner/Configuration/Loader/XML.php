@@ -467,11 +467,79 @@ class PHPUnit_Runner_Configuration_Loader_XML
             );
         }
 
-        if ($root->hasAttribute('strict')) {
+        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
             $this->setBoolean(
-              $configuration,
-              'setStrict',
-              (string)$root->getAttribute('strict')
+                $configuration,
+                'beStrictAboutTestsThatDoNotTestAnything',
+                (string)$root->getAttribute('beStrictAboutTestsThatDoNotTestAnything')
+            );
+        }
+
+        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
+            $this->setBoolean(
+                $configuration,
+                'setCheckForUnintentionallyCoveredCode',
+                (string)$root->getAttribute('checkForUnintentionallyCoveredCode')
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutOutputDuringTests',
+                (string)$root->getAttribute('beStrictAboutOutputDuringTests')
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTestSize')) {
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutTestSize',
+                (string)$root->getAttribute('beStrictAboutTestSize')
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutTodoAnnotatedTests',
+                (string)$root->getAttribute('beStrictAboutTodoAnnotatedTests')
+            );
+        }
+
+        if ($root->hasAttribute('strict')) {
+            $flag = $this->getBoolean(
+                (string) $root->getAttribute('strict'), false
+            );
+
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutTestsThatDoNotTestAnything',
+                $flag
+            );
+
+            $this->setBoolean(
+                $configuration,
+                'setCheckForUnintentionallyCoveredCode',
+                $flag
+            );
+
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutOutputDuringTests',
+                $flag
+            );
+
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutTestSize',
+                $flag
+            );
+
+            $this->setBoolean(
+                $configuration,
+                'beStrictAboutTodoAnnotatedTests',
+                $flag
             );
         }
 

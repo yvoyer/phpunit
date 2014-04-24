@@ -310,7 +310,27 @@ class PHPUnit_Runner_Configuration
     /**
      * @var boolean
      */
-    private $strict = false;
+    private $beStrictAboutTestsThatDoNotTestAnything = false;
+
+    /**
+     * @var boolean
+     */
+    private $beStrictAboutOutputDuringTests = false;
+
+    /**
+     * @var boolean
+     */
+    private $beStrictAboutTestSize = false;
+
+    /**
+     * @var boolean
+     */
+    private $beStrictAboutTodoAnnotatedTests = false;
+
+    /**
+     * @var boolean
+     */
+    private $checkForUnintentionallyCoveredCode = false;
 
     /**
      * @var boolean
@@ -754,9 +774,41 @@ class PHPUnit_Runner_Configuration
     /**
      * @return boolean
      */
-    public function getStrict()
+    public function isStrictAboutTestsThatDoNotTestAnything()
     {
-        return $this->strict;
+        return $this->beStrictAboutTestsThatDoNotTestAnything;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStrictAboutOutputDuringTests()
+    {
+        return $this->beStrictAboutOutputDuringTests;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStrictAboutTestSize()
+    {
+        return $this->beStrictAboutTestSize;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStrictAboutTodoAnnotatedTests()
+    {
+        return $this->beStrictAboutTodoAnnotatedTests;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function checkForUnintentionallyCoveredCode()
+    {
+        return $this->checkForUnintentionallyCoveredCode;
     }
 
     /**
@@ -1415,13 +1467,61 @@ class PHPUnit_Runner_Configuration
     /**
      * @param boolean $flag
      */
-    public function setStrict($flag)
+    public function beStrictAboutTestsThatDoNotTestAnything($flag)
     {
         if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
 
-        $this->strict = $flag;
+        $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function beStrictAboutOutputDuringTests($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->beStrictAboutOutputDuringTests = $flag;
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function beStrictAboutTestSize($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->beStrictAboutTestSize = $flag;
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function beStrictAboutTodoAnnotatedTests($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->beStrictAboutTodoAnnotatedTests = $flag;
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function setCheckForUnintentionallyCoveredCode($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->checkForUnintentionallyCoveredCode = $flag;
     }
 
     /**
