@@ -1812,6 +1812,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function tearDown()
     {
+        $object = new ReflectionObject($this);
+
+        foreach ($object->getProperties() as $attribute) {
+            if ($attribute->getDeclaringClass()->getName() != __CLASS__) {
+                $attribute->setAccessible(true);
+                $attribute->setValue($this, null);
+            }
+        }
     }
 
     /**
