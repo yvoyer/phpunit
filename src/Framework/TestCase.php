@@ -795,6 +795,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->restoreGlobalState();
+        $this->cleanupAttributes();
 
         // Clean up INI settings.
         foreach ($this->iniSettings as $varName => $oldValue) {
@@ -1812,14 +1813,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function tearDown()
     {
-        $object = new ReflectionObject($this);
-
-        foreach ($object->getProperties() as $attribute) {
-            if ($attribute->getDeclaringClass()->getName() != __CLASS__) {
-                $attribute->setAccessible(true);
-                $attribute->setValue($this, null);
-            }
-        }
     }
 
     /**
@@ -1994,5 +1987,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return $this->prophet;
+    }
+
+    /**
+     * @since Method available since Release 4.7.0
+     */
+    private function cleanupAttributes()
+    {
+        $object = new ReflectionObject($this);
+
+        foreach ($object->getProperties() as $attribute) {
+            if ($attribute->getDeclaringClass()->getName() != __CLASS__) {
+                $attribute->setAccessible(true);
+                $attribute->setValue($this, null);
+            }
+        }
     }
 }
