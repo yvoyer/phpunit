@@ -197,9 +197,8 @@ class Command
             return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
         }
 
-        unset($this->arguments['test'], $this->arguments['testFile']
-        );
-
+        unset($this->arguments['test'], $this->arguments['testFile']);
+// todo wrap var_dump($this->arguments);
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
         } catch (Exception $e) {
