@@ -3,7 +3,7 @@
 <phpunit colors="false">
     <filter>
         <whitelist>
-            <directory suffix=".php">./CoverageTest.php</directory>
+            <directory suffix=".php">./Coverage.php</directory>
         </whitelist>
     </filter>
 </phpunit>

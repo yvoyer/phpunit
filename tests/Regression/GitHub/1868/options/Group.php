@@ -1,6 +1,6 @@
 <?php
 
-class GroupTest extends PHPUnit\Framework\TestCase
+class Group extends PHPUnit\Framework\TestCase
 {
     /**
      * @group group-1

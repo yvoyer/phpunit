@@ -4,7 +4,7 @@
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--bootstrap=' . __DIR__ . '/../../../bootstrap.php';
-$_SERVER['argv'][3] = dirname(__FILE__) . '/options/BootstrapTest.php';
+$_SERVER['argv'][3] = dirname(__FILE__) . '/options/Bootstrap.php';
 
 require __DIR__ . '/../../../../vendor/autoload.php';
 \PHPUnit\TextUI\Command::main();

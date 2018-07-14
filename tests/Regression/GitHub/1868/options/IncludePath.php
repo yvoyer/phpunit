@@ -1,5 +1,5 @@
 <?php
-class IncludePathTest extends \PHPUnit\Framework\TestCase
+class IncludePath extends \PHPUnit\Framework\TestCase
 {
     public function testShouldSetIncludePath()
     {

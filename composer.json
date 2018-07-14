@@ -44,7 +44,7 @@
         "sebastian/object-enumerator": "^3.0.3",
         "sebastian/resource-operations": "^1.0",
         "sebastian/version": "^2.0.1",
-		"symfony/console": "~2.0"
+        "symfony/console": "~2.0"
     },
     "require-dev": {
         "ext-PDO": "*",

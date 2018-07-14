@@ -4,7 +4,7 @@
 <?php
 $_SERVER['argv'][1] = '--configuration';
 $_SERVER['argv'][2] = __DIR__ . '/options/configuration.xml';
-$_SERVER['argv'][3] = __DIR__ . '/options/ConfigurationTest.php';
+$_SERVER['argv'][3] = __DIR__ . '/options/Configuration.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

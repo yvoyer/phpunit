@@ -12,7 +12,7 @@ $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = $configPath;
 $_SERVER['argv'][3] = '--coverage-crap4j';
 $_SERVER['argv'][4] = $coveragePath;
-$_SERVER['argv'][5] = dirname(__FILE__) . '/options/CoverageTest.php';
+$_SERVER['argv'][5] = dirname(__FILE__) . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
 ?>

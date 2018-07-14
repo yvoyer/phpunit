@@ -1,5 +1,5 @@
 <?php
-final class StopOnTest extends PHPUnit\Framework\TestCase
+final class StopOn extends PHPUnit\Framework\TestCase
 {
     public function testShouldFail()
     {
@@ -19,6 +19,11 @@ final class StopOnTest extends PHPUnit\Framework\TestCase
     public function testShouldBeSkipped()
     {
         $this->markTestSkipped('Always skip');
+    }
+
+    public function testShouldBeWarning()
+    {
+        trigger_error('Should error', E_USER_WARNING);
     }
 
     public function testShouldBeError()

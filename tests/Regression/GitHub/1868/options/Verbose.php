@@ -1,5 +1,5 @@
 <?php
-final class VerboseTest extends PHPUnit\Framework\TestCase
+final class Verbose extends PHPUnit\Framework\TestCase
 {
     public function testVerbose()
     {

@@ -5,7 +5,7 @@
 
     <testsuites>
         <testsuite name="main">
-            <file>ColorsTest.php</file>
+            <file>Colors.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

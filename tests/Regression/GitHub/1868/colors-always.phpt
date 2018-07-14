@@ -3,7 +3,7 @@
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/ColorsTest.php';
+$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Colors.php';
 $_SERVER['argv'][3] = '--colors=always';
 
 require __DIR__ . '/../../../bootstrap.php';
@@ -18,10 +18,10 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) ColorsTest::testShouldAlwaysFail
+1) Colors::testShouldAlwaysFail
 always failure
 
-%s/ColorsTest.php:6
+%s/Colors.php:6
 
 %sFAILURES!%s
 Tests: 4, Assertions: 1, Failures: 1, Skipped: 1, Incomplete: 1.

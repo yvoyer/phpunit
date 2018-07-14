@@ -3,7 +3,7 @@
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/ConfigurationTest.php';
+$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Configuration.php';
 $_SERVER['argv'][3] = '-c' . __DIR__ . '/options/configuration.xml';
 
 require __DIR__ . '/../../../bootstrap.php';

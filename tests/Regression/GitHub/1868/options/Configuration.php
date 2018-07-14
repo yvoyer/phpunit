@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends TestCase
+class Configuration extends TestCase
 {
     public function testConstantDefinedInConfigFile()
     {

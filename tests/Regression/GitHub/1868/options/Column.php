@@ -1,5 +1,5 @@
 <?php
-class ColumnTest extends \PHPUnit\Framework\TestCase
+class Column extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideColumnCount

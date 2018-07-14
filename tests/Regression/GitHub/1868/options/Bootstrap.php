@@ -1,5 +1,5 @@
 <?php
-class BootstrapTest extends \PHPUnit\Framework\TestCase
+class Bootstrap extends \PHPUnit\Framework\TestCase
 {
     public function testShouldAlwaysPass()
     {

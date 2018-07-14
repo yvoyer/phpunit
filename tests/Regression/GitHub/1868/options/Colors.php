@@ -1,5 +1,5 @@
 <?php
-class ColorsTest extends \PHPUnit\Framework\TestCase
+class Colors extends \PHPUnit\Framework\TestCase
 {
     public function testShouldAlwaysFail()
     {

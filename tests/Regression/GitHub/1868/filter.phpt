@@ -3,7 +3,7 @@
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/ColorsTest.php';
+$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Colors.php';
 $_SERVER['argv'][3] = '--filter=testShouldAlwaysPass';
 
 require __DIR__ . '/../../../bootstrap.php';

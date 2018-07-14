@@ -4,7 +4,7 @@
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--verbose';
-$_SERVER['argv'][3] = __DIR__ . '/options/VerboseTest.php';
+$_SERVER['argv'][3] = __DIR__ . '/options/Verbose.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
@@ -20,10 +20,10 @@ Time: %s, Memory: %s
 
 There was 1 incomplete test:
 
-1) VerboseTest::testVerbose
+1) Verbose::testVerbose
 incompleted test for verbose assertion
 
-%s/tests/Regression/GitHub/1868/options/VerboseTest.php:6
+%s/tests/Regression/GitHub/1868/options/Verbose.php:6
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Incomplete: 1.

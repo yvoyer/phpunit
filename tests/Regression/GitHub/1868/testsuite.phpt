@@ -19,10 +19,10 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) ColorsTest::testShouldAlwaysFail
+1) Colors::testShouldAlwaysFail
 always failure
 
-%s/ColorsTest.php:6
+%s/Colors.php:6
 
 FAILURES!
 Tests: 4, Assertions: 2, Failures: 1, Skipped: 1, Incomplete: 1.

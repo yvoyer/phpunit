@@ -3,7 +3,7 @@
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/ColumnTest.php';
+$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Column.php';
 $_SERVER['argv'][3] = '--columns=25';
 
 require __DIR__ . '/../../../bootstrap.php';

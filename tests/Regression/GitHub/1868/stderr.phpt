@@ -4,7 +4,7 @@
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--stderr';
-$_SERVER['argv'][3] = dirname(__FILE__) . '/options/CoverageTest.php';
+$_SERVER['argv'][3] = dirname(__FILE__) . '/options/Coverage.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
