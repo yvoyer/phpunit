@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --stop-on-error long option.
+Support --stop-on-error long option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -23,7 +23,7 @@ There was 1 error:
 1) StopOn::testShouldBeError
 Should error
 
-%s/tests/Regression/GitHub/1868/options/StopOn.php:31
+%s/StopOn.php:31
 
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

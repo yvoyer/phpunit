@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --fail-on-warning.
+Support --fail-on-warning.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -23,7 +23,7 @@ There was 1 error:
 1) FailOn::testWarning
 warning
 
-%s/tests/Regression/GitHub/1868/options/FailOn.php:11
+%s/FailOn.php:11
 
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

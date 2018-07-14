@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --stop-on-defect.
+Support --stop-on-defect.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -21,7 +21,7 @@ There was 1 failure:
 1) StopOn::testShouldFail
 Always fail
 
-%s/tests/Regression/GitHub/1868/options/StopOn.php:6
+%s/StopOn.php:6
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

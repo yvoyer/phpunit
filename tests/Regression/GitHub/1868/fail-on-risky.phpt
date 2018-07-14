@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --fail-on-risky.
+Support --fail-on-risky.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -23,7 +23,7 @@ There was 1 risky test:
 1) FailOn::testRisky
 This test did not perform any assertions
 
-%s/tests/Regression/GitHub/1868/options/FailOn.php:4
+%s/FailOn.php:4
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Risky: 1.

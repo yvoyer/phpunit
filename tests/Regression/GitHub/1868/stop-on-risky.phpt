@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --stop-on-risky long option.
+Support --stop-on-risky long option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -23,7 +23,7 @@ There was 1 risky test:
 1) StopOn::testShouldBeRisky
 This test did not perform any assertions
 
-%s/tests/Regression/GitHub/1868/options/StopOn.php:9
+%s/StopOn.php:9
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Risky: 1.

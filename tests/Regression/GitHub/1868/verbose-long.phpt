@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --verbose long option.
+Support --verbose long option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -23,7 +23,7 @@ There was 1 incomplete test:
 1) Verbose::testVerbose
 incompleted test for verbose assertion
 
-%s/tests/Regression/GitHub/1868/options/Verbose.php:6
+%s/Verbose.php:6
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Incomplete: 1.

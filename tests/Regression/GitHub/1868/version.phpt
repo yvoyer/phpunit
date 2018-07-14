@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --version long option.
+Support --version long option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

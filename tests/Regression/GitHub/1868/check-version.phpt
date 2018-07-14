@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --check-version option.
+Support --check-version option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

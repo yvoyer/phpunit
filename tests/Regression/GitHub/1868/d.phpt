@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support -d short option.
+Support -d short option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

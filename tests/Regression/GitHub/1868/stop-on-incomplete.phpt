@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --stop-on-incomplete long option.
+Support --stop-on-incomplete long option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

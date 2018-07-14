@@ -1,9 +1,9 @@
 --TEST--
-#1868: Support --filter option.
+Support --filter option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Colors.php';
+$_SERVER['argv'][2] = __DIR__ . '/options/Colors.php';
 $_SERVER['argv'][3] = '--filter=testShouldAlwaysPass';
 
 require __DIR__ . '/../../../bootstrap.php';

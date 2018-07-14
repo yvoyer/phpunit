@@ -1,9 +1,9 @@
 --TEST--
-#1868: Support --columns={int} option.
+Support --columns={int} option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Column.php';
+$_SERVER['argv'][2] = __DIR__ . '/options/Column.php';
 $_SERVER['argv'][3] = '--columns=25';
 
 require __DIR__ . '/../../../bootstrap.php';

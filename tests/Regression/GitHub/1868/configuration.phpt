@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --configuration option.
+Support --configuration option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--configuration';

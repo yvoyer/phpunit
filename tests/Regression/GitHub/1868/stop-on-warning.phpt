@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --stop-on-warning.
+Support --stop-on-warning.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -23,7 +23,7 @@ There was 1 error:
 1) StopOn::testShouldBeWarning
 Should error
 
-%s/tests/Regression/GitHub/1868/options/StopOn.php:26
+%s/StopOn.php:26
 
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

@@ -1,9 +1,9 @@
 --TEST--
-#1868: Support --list-groups switch.
+Support --list-groups switch.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Group.php';
+$_SERVER['argv'][2] = __DIR__ . '/options/Group.php';
 $_SERVER['argv'][3] = '--list-groups';
 
 require __DIR__ . '/../../../bootstrap.php';

@@ -20,4 +20,9 @@ class Colors extends \PHPUnit\Framework\TestCase
     {
         $this->markTestSkipped('always skip');
     }
+
+    public function testRisky()
+    {
+        // do not perform assertion
+    }
 }

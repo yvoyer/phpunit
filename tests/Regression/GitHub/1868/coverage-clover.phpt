@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --coverage-clover option.
+Support --coverage-clover option.
 --FILE--
 <?php
 require __DIR__ . '/../../../bootstrap.php';
@@ -12,7 +12,7 @@ $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = $configPath;
 $_SERVER['argv'][3] = '--coverage-clover';
 $_SERVER['argv'][4] = $coveragePath;
-$_SERVER['argv'][5] = dirname(__FILE__) . '/options/Coverage.php';
+$_SERVER['argv'][5] = __DIR__ . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
 ?>

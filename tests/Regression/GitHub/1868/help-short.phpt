@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --help short option.
+Support --help short option.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

@@ -1,9 +1,9 @@
 --TEST--
-#1868: Support --group with many groups.
+Support --group with many groups.
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Group.php';
+$_SERVER['argv'][2] = __DIR__ . '/options/Group.php';
 $_SERVER['argv'][3] = '--group=group-1,group-2';
 
 require __DIR__ . '/../../../bootstrap.php';

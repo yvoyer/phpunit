@@ -1,5 +1,5 @@
 --TEST--
-#1868: Support --coverage-php option.
+Support --coverage-php option.
 --FILE--
 <?php
 require __DIR__ . '/../../../bootstrap.php';
@@ -10,7 +10,7 @@ $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = __DIR__ . '/options/coverage.xml';
 $_SERVER['argv'][3] = '--coverage-php';
 $_SERVER['argv'][4] = $root->url() . '/coverage';
-$_SERVER['argv'][5] = dirname(__FILE__) . '/options/Coverage.php';
+$_SERVER['argv'][5] = __DIR__ . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
 ?>
