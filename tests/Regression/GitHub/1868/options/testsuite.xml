@@ -5,7 +5,7 @@
 
     <testsuites>
         <testsuite name="main">
-            <file>TestSuite.php</file>
+            <file>AlwaysPass.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
