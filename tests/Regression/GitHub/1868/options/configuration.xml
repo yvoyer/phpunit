@@ -4,7 +4,7 @@
          backupGlobals="false">
 
     <php>
-        <const name="PHPUNIT_CONFIGURATION_OPTION_TEST" value="true"/>
+        <const name="STUB_CONSTANT" value="stub_constant"/>
     </php>
 </phpunit>
 

@@ -2,9 +2,9 @@
 #1868: Support -c option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = dirname(__FILE__) . '/options/Configuration.php';
-$_SERVER['argv'][3] = '-c' . __DIR__ . '/options/configuration.xml';
+$_SERVER['argv'][1] = '-c';
+$_SERVER['argv'][2] = __DIR__ . '/options/configuration.xml';
+$_SERVER['argv'][3] = dirname(__FILE__) . '/options/Configuration.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

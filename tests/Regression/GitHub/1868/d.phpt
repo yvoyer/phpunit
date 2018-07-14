@@ -3,9 +3,11 @@
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--d';
-$_SERVER['argv'][3] = 'MY_KEY=true';
-$_SERVER['argv'][4] = __DIR__ . '/options/IniSet.php';
+$_SERVER['argv'][2] = '-d';
+$_SERVER['argv'][3] = "user_agent=fake user agent";
+$_SERVER['argv'][4] = '-d';
+$_SERVER['argv'][5] = "error_log";
+$_SERVER['argv'][6] = __DIR__ . '/options/IniSet.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
@@ -13,16 +15,8 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-FI.S                                                                4 / 4 (100%)
+..                                                                  2 / 2 (100%)
 
-Time: %s, Memory: %s
+Time: %d ms, Memory: %s
 
-There was 1 failure:
-
-1) Colors::testShouldAlwaysFail
-always failure
-
-%s/Colors.php:6
-
-FAILURES!
-Tests: 4, Assertions: 2, Failures: 1, Skipped: 1, Incomplete: 1.
+OK (2 tests, 2 assertions)
