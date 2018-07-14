@@ -2,10 +2,11 @@
 Support --testsuite option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/options/testsuite.xml';
-$_SERVER['argv'][3] = '--testsuite';
-$_SERVER['argv'][4] = 'main';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = __DIR__ . '/options/testsuite.xml';
+$_SERVER['argv'][] = '--testsuite';
+$_SERVER['argv'][] = 'main';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

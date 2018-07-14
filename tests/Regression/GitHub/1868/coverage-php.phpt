@@ -6,11 +6,12 @@ require __DIR__ . '/../../../bootstrap.php';
 
 $root = \org\bovigo\vfs\vfsStream::setup('root');
 
-$_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/options/coverage.xml';
-$_SERVER['argv'][3] = '--coverage-php';
-$_SERVER['argv'][4] = $root->url() . '/coverage';
-$_SERVER['argv'][5] = __DIR__ . '/options/Coverage.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = __DIR__ . '/options/coverage.xml';
+$_SERVER['argv'][] = '--coverage-php';
+$_SERVER['argv'][] = $root->url() . '/coverage';
+$_SERVER['argv'][] = __DIR__ . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
 ?>

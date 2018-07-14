@@ -2,11 +2,12 @@
 Support --fail-on-warning.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--filter';
-$_SERVER['argv'][3] = 'Warning';
-$_SERVER['argv'][4] = '--fail-on-warning';
-$_SERVER['argv'][5] = __DIR__ . '/options/FailOn.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--filter';
+$_SERVER['argv'][] = 'Warning';
+$_SERVER['argv'][] = '--fail-on-warning';
+$_SERVER['argv'][] = __DIR__ . '/options/FailOn.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

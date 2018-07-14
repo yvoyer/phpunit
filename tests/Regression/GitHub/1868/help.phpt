@@ -2,8 +2,9 @@
 Support --help long option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--help';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--help';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

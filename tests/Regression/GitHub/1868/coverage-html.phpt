@@ -7,11 +7,12 @@ require __DIR__ . '/../../../bootstrap.php';
 $root = \org\bovigo\vfs\vfsStream::setup('coverage');
 $coveragePath = $root->url();
 
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/options/coverage.xml';
-$_SERVER['argv'][3] = '--coverage-html';
-$_SERVER['argv'][4] = $coveragePath;
-$_SERVER['argv'][5] = __DIR__ . '/options/Coverage.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/options/coverage.xml';
+$_SERVER['argv'][] = '--coverage-html';
+$_SERVER['argv'][] = $coveragePath;
+$_SERVER['argv'][] = __DIR__ . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
 ?>

@@ -2,12 +2,13 @@
 Support -d short option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '-d';
-$_SERVER['argv'][3] = "user_agent=fake user agent";
-$_SERVER['argv'][4] = '-d';
-$_SERVER['argv'][5] = "error_log";
-$_SERVER['argv'][6] = __DIR__ . '/options/IniSet.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '-d';
+$_SERVER['argv'][] = "user_agent=fake user agent";
+$_SERVER['argv'][] = '-d';
+$_SERVER['argv'][] = "error_log";
+$_SERVER['argv'][] = __DIR__ . '/options/IniSet.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

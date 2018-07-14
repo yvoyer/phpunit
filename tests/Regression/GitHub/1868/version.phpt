@@ -2,8 +2,9 @@
 Support --version long option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--version';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--version';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

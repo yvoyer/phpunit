@@ -2,10 +2,11 @@
 Support --colors=always option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--colors';
-$_SERVER['argv'][3] = 'always';
-$_SERVER['argv'][4] = __DIR__ . '/options/Colors.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--colors';
+$_SERVER['argv'][] = 'always';
+$_SERVER['argv'][] = __DIR__ . '/options/Colors.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

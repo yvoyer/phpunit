@@ -8,11 +8,12 @@ $root = \org\bovigo\vfs\vfsStream::setup('coverage');
 $coveragePath = \org\bovigo\vfs\vfsStream::path('coverage');
 $configPath = __DIR__ . '/options/coverage.xml';
 
-$_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = $configPath;
-$_SERVER['argv'][3] = '--coverage-clover';
-$_SERVER['argv'][4] = $coveragePath;
-$_SERVER['argv'][5] = __DIR__ . '/options/Coverage.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = $configPath;
+$_SERVER['argv'][] = '--coverage-clover';
+$_SERVER['argv'][] = $coveragePath;
+$_SERVER['argv'][] = __DIR__ . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
 ?>

@@ -2,9 +2,10 @@
 Support --list-groups switch.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = __DIR__ . '/options/Group.php';
-$_SERVER['argv'][3] = '--list-groups';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = __DIR__ . '/options/Group.php';
+$_SERVER['argv'][] = '--list-groups';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

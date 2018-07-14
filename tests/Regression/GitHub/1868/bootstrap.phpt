@@ -2,9 +2,10 @@
 Support bootstrap option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--bootstrap=' . __DIR__ . '/../../../bootstrap.php';
-$_SERVER['argv'][3] = __DIR__ . '/options/Bootstrap.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--bootstrap=' . __DIR__ . '/../../../bootstrap.php';
+$_SERVER['argv'][] = __DIR__ . '/options/Bootstrap.php';
 
 require __DIR__ . '/../../../../vendor/autoload.php';
 \PHPUnit\TextUI\Command::main();

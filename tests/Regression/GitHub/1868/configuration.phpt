@@ -2,9 +2,10 @@
 Support --configuration option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/options/configuration.xml';
-$_SERVER['argv'][3] = __DIR__ . '/options/Configuration.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/options/configuration.xml';
+$_SERVER['argv'][] = __DIR__ . '/options/Configuration.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

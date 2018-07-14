@@ -2,11 +2,12 @@
 Support --stop-on-incomplete long option.
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--filter';
-$_SERVER['argv'][3] = 'Incomplete';
-$_SERVER['argv'][4] = '--stop-on-incomplete';
-$_SERVER['argv'][5] = __DIR__ . '/options/StopOn.php';
+$_SERVER['argv'][] = ''; // present to start index at 0
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--filter';
+$_SERVER['argv'][] = 'Incomplete';
+$_SERVER['argv'][] = '--stop-on-incomplete';
+$_SERVER['argv'][] = __DIR__ . '/options/StopOn.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
