@@ -1,5 +1,5 @@
 --TEST--
-Support --coverage-text with specified file
+Support --strict-coverage-text with specified file
 --FILE--
 <?php
 require __DIR__ . '/../../../bootstrap.php';
@@ -12,6 +12,7 @@ $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/options/coverage.xml';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = $root->path() . '/coverage.txt';
+$_SERVER['argv'][] = '--strict-coverage';
 $_SERVER['argv'][] = __DIR__ . '/options/Coverage.php';
 
 PHPUnit\TextUI\Command::main();
@@ -19,20 +20,21 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.                                                                   1 / 1 (100%)
+R                                                                   1 / 1 (100%)
 
 Time: %s ms, Memory: %sMB
 
-OK (1 test, 1 assertion)
+There was 1 risky test:
+
+1) Coverage::test_it_should_always_return_true
+This test executed code that is not listed as code to be covered or used:
 
 
-Code Coverage Report:%s
-  %s
+Code Coverage Report:  %s
 %s
- Summary:%s
-  Classes: 100.00% (1/1)
-  Methods: 100.00% (1/1)
-  Lines:   100.00% (2/2)
+%s
+%s
+  Classes: 0.00% (0/2)%s
+  Methods: 0.00% (0/2)
+  Lines:   0.00% (0/3)
 
-Coverage
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)

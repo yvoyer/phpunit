@@ -7,6 +7,10 @@
         <testsuite name="main">
             <file>AlwaysPass.php</file>
         </testsuite>
+
+        <testsuite name="other">
+            <file>AlwaysPass.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
 
